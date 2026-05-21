@@ -115,35 +115,50 @@ export default function Contact() {
     setStatusMessage("");
 
     try {
-      const response = await fetch(getAssetPath("/api/contact"), {
+      // Web3Forms: Works on static sites (GitHub Pages) with no backend needed.
+      // Sends the message directly to mdkaif.ece24@bitsindri.ac.in via Web3Forms relay.
+      const web3formsKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+      
+      if (!web3formsKey) {
+        throw new Error("Web3Forms key not configured");
+      }
+
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          access_key: web3formsKey,
+          subject: `📬 New Portfolio Message from ${formData.name}`,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          from_name: "MKN Portfolio Contact Form",
+        }),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         setFormState("success");
-        setStatusMessage(data.message || "Thank you! Your message was sent.");
+        setStatusMessage("✅ Message sent successfully! I'll get back to you soon.");
         setFormData({ name: "", email: "", message: "" });
-        return;
       } else {
-        setFormState("error");
-        setStatusMessage(data.error || "Failed to send message. Please check the form and try again.");
-        return;
+        throw new Error(data.message || "Submission failed");
       }
     } catch (error) {
-      console.warn("Dynamic API contact form unavailable, using local email fallback.", error);
-      
-      // Static fallback: simulate email capture and provide explicit prompt to email directly
-      setTimeout(() => {
-        setFormState("success");
-        setStatusMessage("Message Simulated Successfully! Since this is a static showcase environment, your message has been simulated. To connect immediately, you can also email me directly at mdkaif.ece24@bitsindri.ac.in");
-        setFormData({ name: "", email: "", message: "" });
-      }, 800);
+      console.warn("Web3Forms unavailable:", error);
+      // Hard fallback: open mail client directly
+      const subject = encodeURIComponent(`Portfolio Message from ${formData.name}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      );
+      window.open(`mailto:mdkaif.ece24@bitsindri.ac.in?subject=${subject}&body=${body}`, "_blank");
+      setFormState("success");
+      setStatusMessage("Your email client has been opened with your message pre-filled. Please send it to complete your submission.");
+      setFormData({ name: "", email: "", message: "" });
     }
   };
 
