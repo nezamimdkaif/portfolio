@@ -43,9 +43,9 @@ export default function DroneShowcase() {
   // Video HUD playback states
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [vidTelemetry, setVidTelemetry] = useState({
+  const [vidTelemetry, setVidTelemetry] = useState<any>({
     phase: "SEARCHING",
-    altitude: 8.5,
+    altitude: "8.50",
     pitch: "0.0",
     roll: "0.0",
     yaw: "184.2",
@@ -1354,7 +1354,7 @@ export default function DroneShowcase() {
                 </h2>
                 
                 <p className="text-gray-300 leading-relaxed font-sans text-sm sm:text-base">
-                  The <strong className="text-white">ISRO Robotics Challenge – University Edition (IRoC‑U)</strong> themed <strong className="text-[#00d4ff]">"ASCEND"</strong> tasks university engineering groups with constructing a fully autonomous micro-UAV. The drone is restricted to GPS-denied navigation, demanding high-fidelity optical cameras and onboard telemetry sensors to locate a specialized base station. 
+                  The <strong className="text-white">ISRO Robotics Challenge – University Edition (IRoC‑U)</strong> themed <strong className="text-[#00d4ff]">&quot;ASCEND&quot;</strong> tasks university engineering groups with constructing a fully autonomous micro-UAV. The drone is restricted to GPS-denied navigation, demanding high-fidelity optical cameras and onboard telemetry sensors to locate a specialized base station. 
                 </p>
                 
                 <p className="text-gray-300 leading-relaxed font-sans text-sm sm:text-base">
