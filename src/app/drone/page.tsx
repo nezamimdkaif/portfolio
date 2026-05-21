@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { getAssetPath } from "@/utils";
 import { 
   Cpu, Battery, Download, Play, Pause, RotateCcw, 
   Radio, Target, Activity, Compass, Info, AlertTriangle,
@@ -89,7 +90,7 @@ export default function DroneShowcase() {
   // Images shared by user in public folder, mapped exactly to visual contents
   const galleryImages = [
     {
-      src: "/drone-sim/WhatsApp Image 2026-05-21 at 12.24.21 PM (1).jpeg",
+      src: getAssetPath("/drone-sim/WhatsApp Image 2026-05-21 at 12.24.21 PM (1).jpeg"),
       tabName: "ROS Node Graph",
       title: "ROS System Architecture & Node Network Graph",
       category: "Software Workflow",
@@ -98,7 +99,7 @@ export default function DroneShowcase() {
       crop: { fit: "contain" as const, position: "center" }
     },
     {
-      src: "/drone-sim/WhatsApp Image 2026-05-21 at 12.24.19 PM.jpeg",
+      src: getAssetPath("/drone-sim/WhatsApp Image 2026-05-21 at 12.24.19 PM.jpeg"),
       tabName: "Landing Dock Skids",
       title: "UAV Ground Landing Dock & Pogo Skids",
       category: "Mechanical & Electrical",
@@ -107,7 +108,7 @@ export default function DroneShowcase() {
       crop: { fit: "cover" as const, position: "center 70%" }
     },
     {
-      src: "/drone-sim/WhatsApp Image 2026-05-21 at 12.24.20 PM.jpeg",
+      src: getAssetPath("/drone-sim/WhatsApp Image 2026-05-21 at 12.24.20 PM.jpeg"),
       tabName: "UAV Electronics",
       title: "Autopilot & Companion Payload Integration",
       category: "Avionics Payload",
@@ -116,7 +117,7 @@ export default function DroneShowcase() {
       crop: { fit: "cover" as const, position: "center 40%" }
     },
     {
-      src: "/drone-sim/WhatsApp Image 2026-05-21 at 12.24.21 PM.jpeg",
+      src: getAssetPath("/drone-sim/WhatsApp Image 2026-05-21 at 12.24.21 PM.jpeg"),
       tabName: "Lab Calibration Test",
       title: "IRoC-U Flight Trial & Power Calibration HUD",
       category: "System Validation",
@@ -778,7 +779,7 @@ export default function DroneShowcase() {
                     <div className="relative flex-grow bg-black p-2 flex items-center justify-center min-h-[380px] overflow-hidden group">
                       <video
                         ref={videoRef}
-                        src="/drone-sim/drone_landing.mp4"
+                        src={getAssetPath("/drone-sim/drone_landing.mp4")}
                         onTimeUpdate={handleTimeUpdate}
                         loop
                         playsInline
@@ -1425,14 +1426,14 @@ export default function DroneShowcase() {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-              <Link
-                href="/drone_firmware_v1.zip"
+              <a
+                href={getAssetPath("/drone_firmware_v1.zip")}
                 download
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent-cyan text-[#060b13] font-display font-bold rounded-xl hover:bg-accent-cyan/90 transition-colors shadow-lg shadow-accent-cyan/20 text-sm"
               >
                 <Download size={16} />
                 Download Firmware Suite
-              </Link>
+              </a>
               
               <Link
                 href="/projects"

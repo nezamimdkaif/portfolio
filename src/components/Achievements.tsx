@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Trophy, Award, ExternalLink, Download } from "lucide-react";
+import { getAssetPath } from "@/utils";
 
 const achievements = [
   {
@@ -80,7 +81,7 @@ export default function Achievements() {
                     <div className="mt-8 flex justify-center">
                       {item.linkType === "download" ? (
                         <motion.a
-                          href={item.link}
+                          href={getAssetPath(item.link)}
                           download="ISRO_GNSS_Certificate.pdf"
                           target="_blank"
                           rel="noopener noreferrer"

@@ -15,10 +15,16 @@ import {
 import Link from "next/link";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { getAssetPath } from "@/utils";
 
 // Command output logs database
-const commandResponses = {
-  isro: `
+const getCommandResponses = () => {
+  const resumeUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}${getAssetPath("/nezami_uavs_cv_ism.pdf")}`
+    : "https://nezamimdkaif.github.io/portfolio/nezami_uavs_cv_ism.pdf";
+
+  return {
+    isro: `
 [ISRO IROC 2026 UAV DOCKING CHALLENGE]
 --------------------------------------------------
 STATUS      : Qualified Round 1 & Round 2 (Actively competing in Round 3 Autonomy)
@@ -28,7 +34,7 @@ OBJECTIVES  : Redesigning and optimizing the physical docking station mechanisms
 INTEGRATION : Successfully interfaced Arduino sensor relays with Pixhawk OrangeCube FC.
 DIAGNOSTIC  : Mechanical tolerance checked to 0.5cm mechanical guidance error.
 `,
-  sensors: `
+    sensors: `
 [SYSTEM DIAGNOSTIC REPORT]
 --------------------------------------------------
 [OK] GNSS RTK RECEIVER: 3D Fix Active (14 Satellites, DGPS lock)
@@ -39,7 +45,7 @@ DIAGNOSTIC  : Mechanical tolerance checked to 0.5cm mechanical guidance error.
 --------------------------------------------------
 RESULT: ALL HARDWARE SUBSYSTEMS OPERATIONAL. GO FOR FLIGHT.
 `,
-  drone: `
+    drone: `
             __          __
            \\  \\  __  /  /
             \\  \\/  \\/  /
@@ -53,7 +59,7 @@ RESULT: ALL HARDWARE SUBSYSTEMS OPERATIONAL. GO FOR FLIGHT.
       - Power: 4S 5200mAh LiPo Battery Pack
       - Payload:Detachable ESP32 Camera Node
 `,
-  resume: `
+    resume: `
 [RESUME/CV ACQUISITION]
 --------------------------------------------------
 NAME        : Md Kaif Nezami
@@ -61,9 +67,10 @@ DEGREE      : B.Tech, Electronics and Communication Engineering (ECE)
 ACADEMIC    : Birsa Institute of Technology (BIT) Sindri (2024-2028)
 RESUME FILE : nezami_uavs_cv_ism.pdf
 
-Click to download: http://localhost:3000/nezami_uavs_cv_ism.pdf
+Click to download: ${resumeUrl}
 Or view directly in browser.
 `
+  };
 };
 
 export default function TelemetryConsole() {
@@ -152,13 +159,13 @@ AVAILABLE SHELL DIRECTIVES:
         type: "output"
       });
     } else if (cleanCmd === "isro") {
-      newHistory.push({ text: commandResponses.isro, type: "output" });
+      newHistory.push({ text: getCommandResponses().isro, type: "output" });
     } else if (cleanCmd === "sensors") {
-      newHistory.push({ text: commandResponses.sensors, type: "output" });
+      newHistory.push({ text: getCommandResponses().sensors, type: "output" });
     } else if (cleanCmd === "drone") {
-      newHistory.push({ text: commandResponses.drone, type: "output" });
+      newHistory.push({ text: getCommandResponses().drone, type: "output" });
     } else if (cleanCmd === "resume") {
-      newHistory.push({ text: commandResponses.resume, type: "output" });
+      newHistory.push({ text: getCommandResponses().resume, type: "output" });
     } else if (cleanCmd === "clear") {
       setHistory([]);
       setInputValue("");

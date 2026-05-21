@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { MapPin, GraduationCap, Award } from "lucide-react";
 
+import { getAssetPath } from "@/utils";
+
 export default function About() {
   return (
     <section id="about" className="py-24 relative">
@@ -45,7 +47,7 @@ export default function About() {
               <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4 items-center justify-between">
                 <span className="text-gray-400 text-sm font-medium">Looking for my detailed credentials?</span>
                 <motion.a
-                  href="/nezami_uavs_cv_ism.pdf"
+                  href={getAssetPath("/nezami_uavs_cv_ism.pdf")}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05, backgroundColor: "rgba(0, 212, 255, 0.15)" }}

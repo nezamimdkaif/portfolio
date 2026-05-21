@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { getAssetPath } from "@/utils";
 import { ArrowRight, Download } from "lucide-react";
 
 export default function Hero() {
@@ -53,7 +54,7 @@ export default function Hero() {
             <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
           </motion.a>
           <motion.a
-            href="/nezami_uavs_cv_ism.pdf"
+            href={getAssetPath("/nezami_uavs_cv_ism.pdf")}
             download="Md_Kaif_Nezami_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"

@@ -11,6 +11,11 @@ const nextConfig = {
   // NOTE: If your site is hosted on a GitHub Pages repository sub-path (e.g. username.github.io/portfolio),
   // uncomment the line below and set it to your repository name:
   basePath: '/portfolio',
+
+  // Expose the base path to the client-side code
+  env: {
+    NEXT_PUBLIC_BASE_PATH: '/portfolio',
+  },
 }
 
 module.exports = nextConfig
