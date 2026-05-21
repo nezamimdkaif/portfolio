@@ -297,7 +297,7 @@ AVAILABLE SHELL DIRECTIVES:
             <div className="flex items-center gap-2">
               <TermIcon size={18} className="text-[#10b981]" />
               <span className="text-white text-xs font-bold uppercase tracking-widest">
-                INTEGRATED UAV MOCK DIAGNOSTIC SHELL
+                INTEGRATED UAV OPERATIONAL DIAGNOSTIC SHELL
               </span>
             </div>
             <div className="flex gap-1.5">

@@ -16,6 +16,7 @@ import {
   BookOpen
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { getAssetPath } from "@/utils";
 
 interface GitHubStats {
   user: {
@@ -54,7 +55,7 @@ export default function Contact() {
   useEffect(() => {
     async function fetchGitHubData() {
       try {
-        const response = await fetch("/api/github");
+        const response = await fetch(getAssetPath("/api/github"));
         if (response.ok) {
           const data = await response.json();
           setGithubData(data);
@@ -69,45 +70,37 @@ export default function Contact() {
       setGithubData({
         user: {
           name: "Md Kaif Nezami",
-          bio: "Embedded Systems & Robotics Engineer | Autonomous UAV Specialist",
-          public_repos: 12,
-          followers: 47,
-          following: 32,
-          avatar_url: "https://avatars.githubusercontent.com/u/144950295?v=4",
+          bio: "Embedded Systems & Robotics Engineer | B.Tech ECE Student at BIT Sindri | ISRO IROC 2026 Hardware Lead",
+          public_repos: 4,
+          followers: 5,
+          following: 12,
+          avatar_url: "https://github.com/nezamimdkaif.png",
           html_url: "https://github.com/nezamimdkaif"
         },
         repos: [
           {
-            name: "uav-autonomous-landing",
-            description: "ROS2 & MAVLink-based precision autonomous landing system utilizing downcard cameras and ArUco markers.",
-            stargazers_count: 8,
-            forks_count: 3,
-            language: "C++",
-            html_url: "https://github.com/nezamimdkaif/uav-autonomous-landing"
-          },
-          {
-            name: "esp32-telemetry-cam",
-            description: "Zero-latency aerial video & telemetry stream over RTSP protocol using ESP32-CAM.",
-            stargazers_count: 5,
-            forks_count: 2,
-            language: "C++",
-            html_url: "https://github.com/nezamimdkaif/esp32-telemetry-cam"
-          },
-          {
-            name: "pixhawk-hexacopter-bootcamp",
-            description: "Core drone configurations, sensor calibration sheets, PID tuning scripts, and waypoint flight testing.",
-            stargazers_count: 4,
+            name: "ISRO-IROC-2026",
+            description: "Subsystem design and hardware docking control integration code for the ISRO IROC UAV Docking Challenge.",
+            stargazers_count: 2,
             forks_count: 1,
-            language: "Python",
-            html_url: "https://github.com/nezamimdkaif/pixhawk-hexacopter-bootcamp"
+            language: "C++",
+            html_url: "https://github.com/nezamimdkaif/ISRO-IROC-2026"
           },
           {
-            name: "portfolio-website",
-            description: "Aerospace-grade portfolio website dashboard displaying UAV robotics engineering works.",
-            stargazers_count: 6,
-            forks_count: 2,
-            language: "TypeScript",
-            html_url: "https://github.com/nezamimdkaif/portfolio-website"
+            name: "uav-hexacopter-flight",
+            description: "OrangeCube configuration, PID tuning files, and waypoint mission planning configurations.",
+            stargazers_count: 1,
+            forks_count: 0,
+            language: "C",
+            html_url: "https://github.com/nezamimdkaif/uav-hexacopter-flight"
+          },
+          {
+            name: "payload-camera-transmission",
+            description: "Lightweight camera module controller with ESP32-CAM and wireless video data transmission code.",
+            stargazers_count: 1,
+            forks_count: 0,
+            language: "Python",
+            html_url: "https://github.com/nezamimdkaif/payload-camera-transmission"
           }
         ]
       });
@@ -122,7 +115,7 @@ export default function Contact() {
     setStatusMessage("");
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(getAssetPath("/api/contact"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,23 +123,28 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
         setFormState("success");
         setStatusMessage(data.message || "Thank you! Your message was sent.");
         setFormData({ name: "", email: "", message: "" });
         return;
+      } else {
+        setFormState("error");
+        setStatusMessage(data.error || "Failed to send message. Please check the form and try again.");
+        return;
       }
     } catch (error) {
       console.warn("Dynamic API contact form unavailable, using local email fallback.", error);
+      
+      // Static fallback: simulate email capture and provide explicit prompt to email directly
+      setTimeout(() => {
+        setFormState("success");
+        setStatusMessage("Message Simulated Successfully! Since this is a static showcase environment, your message has been simulated. To connect immediately, you can also email me directly at mdkaif.ece24@bitsindri.ac.in");
+        setFormData({ name: "", email: "", message: "" });
+      }, 800);
     }
-
-    // Static fallback: simulate email capture and provide explicit prompt to email directly
-    setTimeout(() => {
-      setFormState("success");
-      setStatusMessage("Message Simulated Successfully! Since this is a static showcase environment, your message has been simulated. To connect immediately, you can also email me directly at mdkaif.ece24@bitsindri.ac.in");
-      setFormData({ name: "", email: "", message: "" });
-    }, 800);
   };
 
   return (

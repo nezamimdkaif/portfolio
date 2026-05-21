@@ -131,7 +131,7 @@ export default function DroneShowcase() {
   useEffect(() => {
     const fetchTelemetry = async () => {
       try {
-        const res = await fetch("/api/telemetry");
+        const res = await fetch(getAssetPath("/api/telemetry"));
         if (res.ok) {
           const data = await res.json();
           data.uav.model = "URSC Autonomous Guidance UAV";
@@ -143,31 +143,32 @@ export default function DroneShowcase() {
       }
 
       const t = Date.now() / 1000;
+      const isCharging = Math.sin(t / 10) > 0;
       const simulatedData: TelemetryData = {
         timestamp: Date.now(),
-        status: Math.sin(t / 10) > 0 ? "DOCKED" : "DESCENDING_ALIGNMENT",
+        status: isCharging ? "DOCKED" : "DESCENDING_ALIGNMENT",
         uav: {
-          model: "URSC Autonomous Guidance UAV",
-          battery: `${(78 - (t % 3600) * 0.005).toFixed(1)}%`,
-          currentDraw: Math.sin(t / 10) > 0 ? "-2.68A (CHARGING)" : "12.80A",
-          voltage: "15.27V",
-          coordinates: { lat: "22.3149", lng: "87.3102" },
-          altitude: `${(8.5 + Math.sin(t) * 0.4).toFixed(2)}m`,
-          heading: `${(184.2 + Math.sin(t * 0.5) * 5).toFixed(1)}°`,
+          model: "ISRO IROC Hexacopter v2",
+          battery: `${(82 - (t % 3600) * 0.003).toFixed(1)}%`,
+          currentDraw: isCharging ? "-2.68A (CHARGING)" : "12.80A",
+          voltage: isCharging ? "15.27V" : "14.84V",
+          coordinates: { lat: "23.8125", lng: "86.4412" },
+          altitude: `${isCharging ? 0.08 : (8.5 + Math.sin(t) * 0.4).toFixed(2)}m`,
+          heading: `${(184.2 + Math.sin(t * 0.5) * 1.5).toFixed(1)}°`,
           orientation: {
-            pitch: `${(Math.sin(t / 2) * 2).toFixed(1)}°`,
-            roll: `${(Math.cos(t / 2) * 1.5).toFixed(1)}°`
+            pitch: `${isCharging ? "0.0" : (Math.sin(t / 2) * 1.2).toFixed(1)}°`,
+            roll: `${isCharging ? "0.0" : (Math.cos(t / 2) * 0.8).toFixed(1)}°`
           }
         },
         groundStation: {
           type: "Precision ArUco Charging Dock v2",
-          magneticLock: Math.sin(t / 10) > 0 ? "LOCKED" : "STANDBY",
-          chargerOutput: Math.sin(t / 10) > 0 ? "156.2W (Fast Latch)" : "0W",
+          magneticLock: isCharging ? "LOCKED" : "STANDBY",
+          chargerOutput: isCharging ? "40.9W (2.68A @ 15.27V)" : "0.0W",
           alignmentError: {
-            x: `${(Math.sin(t / 2) * 5.2).toFixed(1)}mm`,
-            y: `${(Math.cos(t / 2) * 4.8).toFixed(1)}mm`
+            x: `${isCharging ? "0.0" : (Math.sin(t / 2) * 5.2).toFixed(1)}mm`,
+            y: `${isCharging ? "0.0" : (Math.cos(t / 2) * 4.8).toFixed(1)}mm`
           },
-          thermalState: "34.2°C"
+          thermalState: "32.4°C"
         }
       };
       setTelemetry(simulatedData);
@@ -427,27 +428,45 @@ export default function DroneShowcase() {
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
-      // Sky Background (Vibrant Dark)
+      const isLightTheme = document.documentElement.classList.contains("light-theme");
+
+      // Sky Background (Vibrant Dark or Clean Light)
       const skyGrad = ctx.createLinearGradient(0, 0, 0, h - 80);
-      skyGrad.addColorStop(0, "#060b13");
-      skyGrad.addColorStop(1, "#0d1b2a");
+      if (isLightTheme) {
+        skyGrad.addColorStop(0, "#f8fafc");
+        skyGrad.addColorStop(1, "#e2e8f0");
+      } else {
+        skyGrad.addColorStop(0, "#060b13");
+        skyGrad.addColorStop(1, "#0d1b2a");
+      }
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, w, h);
 
-      // Stars
-      ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-      for (let i = 0; i < 15; i++) {
-        const starX = (Math.sin(i * 99) * 0.5 + 0.5) * w;
-        const starY = (Math.cos(i * 37) * 0.5 + 0.5) * (h - 100);
-        ctx.fillRect(starX, starY, 1.5, 1.5);
+      // Stars (Dark mode) or Gridlines (Light mode)
+      if (isLightTheme) {
+        ctx.strokeStyle = "rgba(2, 132, 199, 0.05)";
+        ctx.lineWidth = 1;
+        for (let i = 40; i < h - 80; i += 40) {
+          ctx.beginPath();
+          ctx.moveTo(0, i);
+          ctx.lineTo(w, i);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+        for (let i = 0; i < 15; i++) {
+          const starX = (Math.sin(i * 99) * 0.5 + 0.5) * w;
+          const starY = (Math.cos(i * 37) * 0.5 + 0.5) * (h - 100);
+          ctx.fillRect(starX, starY, 1.5, 1.5);
+        }
       }
 
       // Ground Base
-      ctx.fillStyle = "#0c1524";
+      ctx.fillStyle = isLightTheme ? "#cbd5e1" : "#0c1524";
       ctx.fillRect(0, h - 80, w, 80);
       
       // Ground perspective gridlines
-      ctx.strokeStyle = "rgba(0, 212, 255, 0.06)";
+      ctx.strokeStyle = isLightTheme ? "rgba(2, 132, 199, 0.08)" : "rgba(0, 212, 255, 0.06)";
       ctx.lineWidth = 1;
       for (let i = 0; i < w; i += 50) {
         ctx.beginPath();
@@ -461,9 +480,9 @@ export default function DroneShowcase() {
       const platH = 12;
       const platX = w / 2 - platW / 2;
       const platY = h - 92;
-      ctx.fillStyle = "#1b2a47";
+      ctx.fillStyle = isLightTheme ? "#e2e8f0" : "#1b2a47";
       ctx.fillRect(platX, platY, platW, platH);
-      ctx.strokeStyle = "#38bdf8";
+      ctx.strokeStyle = isLightTheme ? "#0284c7" : "#38bdf8";
       ctx.lineWidth = 2;
       ctx.strokeRect(platX, platY, platW, platH);
 
@@ -487,7 +506,7 @@ export default function DroneShowcase() {
       const droneX = w / 2 + (xOffset * 80);
 
       if (localPhase !== "CHARGING" && localPhase !== "TOUCHDOWN") {
-        ctx.fillStyle = "rgba(14, 165, 233, 0.06)";
+        ctx.fillStyle = isLightTheme ? "rgba(2, 132, 199, 0.04)" : "rgba(14, 165, 233, 0.06)";
         ctx.beginPath();
         ctx.moveTo(droneX, droneY + 8);
         ctx.lineTo(w / 2 - 90, platY);
@@ -496,7 +515,7 @@ export default function DroneShowcase() {
         ctx.fill();
 
         // Laser scan line
-        ctx.strokeStyle = "rgba(0, 212, 255, 0.3)";
+        ctx.strokeStyle = isLightTheme ? "rgba(2, 132, 199, 0.25)" : "rgba(0, 212, 255, 0.3)";
         ctx.setLineDash([2, 4]);
         ctx.beginPath();
         ctx.moveTo(droneX, droneY + 8);
@@ -507,7 +526,7 @@ export default function DroneShowcase() {
 
       // Draw Drone Spring Pogo Pins
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "#94a3b8";
+      ctx.strokeStyle = isLightTheme ? "#475569" : "#94a3b8";
       // Left Leg
       const legHeight = 25 - (springX * 1.5);
       ctx.beginPath();
@@ -526,22 +545,22 @@ export default function DroneShowcase() {
       ctx.fillRect(droneX + 23, droneY + legHeight - 2, 4, 4);
 
       // Drone Body
-      ctx.fillStyle = "#0f172a";
+      ctx.fillStyle = isLightTheme ? "#334155" : "#0f172a";
       ctx.beginPath();
       ctx.ellipse(droneX, droneY, 32, 10, 0, 0, 2 * Math.PI);
       ctx.fill();
-      ctx.strokeStyle = "#38bdf8";
+      ctx.strokeStyle = isLightTheme ? "#0284c7" : "#38bdf8";
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // GPS dome
-      ctx.fillStyle = "#f8fafc";
+      ctx.fillStyle = isLightTheme ? "#cbd5e1" : "#f8fafc";
       ctx.beginPath();
       ctx.arc(droneX, droneY - 7, 6, Math.PI, 0);
       ctx.fill();
 
       // Rotors Spinning
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+      ctx.strokeStyle = isLightTheme ? "rgba(15, 23, 42, 0.2)" : "rgba(255, 255, 255, 0.3)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.ellipse(droneX - 32, droneY - 4, 16, 2, 0, 0, 2 * Math.PI);
@@ -555,8 +574,8 @@ export default function DroneShowcase() {
         const vectorScale = 3;
         
         // Gravity Vector (Red, down)
-        ctx.strokeStyle = "#f87171";
-        ctx.fillStyle = "#f87171";
+        ctx.strokeStyle = isLightTheme ? "#ef4444" : "#f87171";
+        ctx.fillStyle = isLightTheme ? "#ef4444" : "#f87171";
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(droneX, droneY);
@@ -571,8 +590,8 @@ export default function DroneShowcase() {
 
         // Thrust Vector (Cyan, up)
         const thrustVal = (localPhase === "PATROL" || localPhase === "ALIGNING") ? g : g * 0.9;
-        ctx.strokeStyle = "#22d3ee";
-        ctx.fillStyle = "#22d3ee";
+        ctx.strokeStyle = isLightTheme ? "#0ea5e9" : "#22d3ee";
+        ctx.fillStyle = isLightTheme ? "#0ea5e9" : "#22d3ee";
         ctx.beginPath();
         ctx.moveTo(droneX, droneY);
         ctx.lineTo(droneX, droneY - thrustVal * vectorScale);
@@ -585,8 +604,8 @@ export default function DroneShowcase() {
 
         // Wind/Drift Force (Green, lateral)
         if (windSetting !== "none") {
-          ctx.strokeStyle = "#4ade80";
-          ctx.fillStyle = "#4ade80";
+          ctx.strokeStyle = isLightTheme ? "#16a34a" : "#4ade80";
+          ctx.fillStyle = isLightTheme ? "#16a34a" : "#4ade80";
           ctx.beginPath();
           ctx.moveTo(droneX, droneY);
           ctx.lineTo(droneX + windForce * 15, droneY);
@@ -601,7 +620,7 @@ export default function DroneShowcase() {
 
       // Charging Sparks
       if (localPhase === "CHARGING") {
-        ctx.strokeStyle = "#60a5fa";
+        ctx.strokeStyle = isLightTheme ? "#2563eb" : "#60a5fa";
         ctx.lineWidth = 1.5;
         for (let i = 0; i < 2; i++) {
           ctx.beginPath();
@@ -617,7 +636,7 @@ export default function DroneShowcase() {
       }
 
       // HUD Overlay text
-      ctx.fillStyle = "rgba(56, 189, 248, 0.9)";
+      ctx.fillStyle = isLightTheme ? "rgba(2, 132, 199, 0.95)" : "rgba(56, 189, 248, 0.9)";
       ctx.font = "9px monospace";
       ctx.fillText(`ENGINE: RIGID_BODY_2D_SIM`, 12, 18);
       ctx.fillText(`PHASE: ${localPhase}`, 12, 30);

@@ -1,53 +1,58 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  // Generate slightly randomized real-time drone telemetry simulating a 2050 autonomous docking landing procedure
+  // Generate highly realistic, dynamic real-time telemetry simulating the ISRO IROC 2026 UAV landing protocol
   const time = Date.now();
   
-  // Oscillate values around plausible target states
-  const targetLat = 12.9716; // Simulated ISRO testing ground coordinate
-  const targetLng = 77.5946;
+  // Real coordinates: BIT Sindri ECE Department and IIT (ISM) Dhanbad Drone Lab
+  const targetLat = 23.8125; 
+  const targetLng = 86.4412;
   
-  const phase = (time / 5000) % (Math.PI * 2);
-  const distance = Math.max(0, 5.2 - Math.abs(Math.sin(phase) * 5.0)).toFixed(2);
-  const isDocked = parseFloat(distance) < 0.05;
+  const phase = (time / 6000) % (Math.PI * 2);
+  // Altimeter profile descending from 8.5m down to touchdown (0.08m including skid clearance)
+  const altitudeVal = Math.max(0.08, 8.5 - Math.abs(Math.sin(phase) * 8.42));
+  const isDocked = altitudeVal <= 0.15;
   const isCharging = isDocked;
 
-  const pitch = (Math.sin(time / 800) * 2.5).toFixed(1);
-  const roll = (Math.cos(time / 1000) * 1.5).toFixed(1);
-  const yaw = ((time / 500) % 360).toFixed(1);
+  // Real IMU dynamics (minor engine vibrations and landing sway)
+  const pitch = (isDocked ? 0.0 : Math.sin(time / 400) * 1.8).toFixed(1);
+  const roll = (isDocked ? 0.0 : Math.cos(time / 500) * 1.2).toFixed(1);
+  const yaw = ((isDocked ? 185.0 : 184.2 + Math.sin(time / 2000) * 0.8) % 360).toFixed(1);
   
-  const batteryPct = Math.max(12, 100 - ((time / 60000) % 15)).toFixed(0);
-  const currentDraw = isCharging ? "-4.5A (CHARGING)" : "12.8A";
+  // Real 4S LiPo battery parameters (16.8V fully charged, 14.8V nominal, discharging down to 14.0V)
+  const batteryPct = Math.max(26, 96 - ((time / 120000) % 70)).toFixed(0);
+  const voltage = (isCharging ? 15.27 : 14.84 - (100 - parseFloat(batteryPct)) * 0.008).toFixed(2);
+  const currentDraw = isCharging ? "-2.68A (CHARGING)" : "12.80A (DISCHARGING)";
   
-  const alignmentX = (Math.sin(time / 600) * 0.12).toFixed(3);
-  const alignmentY = (Math.cos(time / 700) * 0.08).toFixed(3);
+  // ArUco optical alignment errors (measured in meters on the GCS solver)
+  const alignmentX = (isDocked ? 0.000 : Math.sin(time / 600) * 0.08).toFixed(3);
+  const alignmentY = (isDocked ? 0.000 : Math.cos(time / 700) * 0.05).toFixed(3);
 
   const telemetry = {
     timestamp: time,
     status: isDocked ? "DOCKED" : "DESCENDING_ALIGNMENT",
     uav: {
-      model: "MKN-ALPHA-2050",
+      model: "ISRO IROC Hexacopter v2",
       battery: `${batteryPct}%`,
       currentDraw,
-      voltage: "16.4V",
+      voltage: `${voltage}V`,
       coordinates: {
-        lat: (targetLat + Math.sin(time / 5000) * 0.0001).toFixed(6),
-        lng: (targetLng + Math.cos(time / 5000) * 0.0001).toFixed(6),
+        lat: (targetLat + (isDocked ? 0.000000 : Math.sin(time / 6000) * 0.00008)).toFixed(6),
+        lng: (targetLng + (isDocked ? 0.000000 : Math.cos(time / 6000) * 0.00008)).toFixed(6),
       },
-      altitude: isDocked ? "0.00m" : `${Math.max(0, parseFloat(distance) * 0.8).toFixed(2)}m`,
+      altitude: `${altitudeVal.toFixed(2)}m`,
       heading: `${yaw}°`,
       orientation: { pitch: `${pitch}°`, roll: `${roll}°` },
     },
     groundStation: {
-      type: "Oval Electromagnetic Induction Cradle v4",
+      type: "Precision ArUco Charging Dock v2",
       magneticLock: isDocked ? "LOCKED" : "STANDBY",
-      chargerOutput: isCharging ? "150W (Fast Induction)" : "0W",
+      chargerOutput: isCharging ? "40.9W (2.68A @ 15.27V)" : "0.0W",
       alignmentError: {
-        x: `${alignmentX}m`,
-        y: `${alignmentY}m`,
+        x: `${(parseFloat(alignmentX) * 1000).toFixed(1)}mm`,
+        y: `${(parseFloat(alignmentY) * 1000).toFixed(1)}mm`,
       },
-      thermalState: "34.2°C",
+      thermalState: "32.4°C",
     }
   };
 

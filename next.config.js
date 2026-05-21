@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enforce static HTML export for GitHub Pages deployment
-  output: 'export',
+  // Enforce static HTML export only for production builds (GitHub Pages deployment)
+  output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   
   // Disable image optimization since static hosting does not run a Node server for image optimization resizing
   images: {
