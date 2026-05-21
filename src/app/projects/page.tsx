@@ -153,6 +153,20 @@ void setup() {
 
 const detailedProjects = [
   {
+    id: "swayaan",
+    title: "SwaYaan Summer Research Internship",
+    specs: "MeitY Central Govt Initiative (IIT ISM)",
+    description: "Serving as a Project Research Intern at the specialized Drone Lab in the Department of Electronics Engineering, IIT (ISM) Dhanbad, focusing on capacity building, human resource development in Unmanned Aircraft Systems (UAS), and advanced GNC platforms.",
+    bom: ["Pixhawk Companion Systems", "High-Wattage Pogo Interfaces", "Ultrasonic Sensory Arrays", "ESP32 Wireless Relays", "MAVLink Telemetry Triggers"],
+    features: [
+      "Assisting in physical flight platform setup, sensor configurations, and lab calibrations.",
+      "Developing and testing telemetry relay modules and custom sensor feedback loops.",
+      "Contributing directly to the national SwaYaan human resource & UAS drone capacity building objectives.",
+      "Analyzing sensor data logs and PID navigation stability during bench mock runs."
+    ],
+    accent: "border-accent-cyan/40 hover:border-accent-cyan/80"
+  },
+  {
     id: "iroc",
     title: "ISRO IROC 2026 UAV Docking Station",
     specs: "Autonomous Mechanical & Sensor Interfacing Dock",

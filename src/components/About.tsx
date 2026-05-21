@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, GraduationCap, Award } from "lucide-react";
+import { MapPin, GraduationCap, Award, Briefcase } from "lucide-react";
 
 import { getAssetPath } from "@/utils";
 
@@ -68,6 +68,23 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
+            <motion.div 
+              whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0, 212, 255, 0.1)" }}
+              className="glass-card p-6 glow-hover transition-all duration-300"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <Briefcase className="text-accent-cyan" size={24} />
+                <h4 className="font-semibold text-lg">Active Internship</h4>
+              </div>
+              <p className="text-gray-300 mb-2">Project Intern — Drone Lab, IIT (ISM) Dhanbad</p>
+              <p className="text-gray-400 text-sm">
+                Working on the prestigious central government-funded <strong>SwaYaan</strong> initiative under MeitY, focusing on capacity building for human resource development in Unmanned Aircraft Systems (UAS).
+              </p>
+              <p className="text-gray-400 text-xs mt-2.5 font-semibold text-accent-cyan tracking-wider uppercase">
+                Summer 2026 | Drone Assembly, GNC Systems & Sensor Relays
+              </p>
+            </motion.div>
+
             <motion.div 
               whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0, 212, 255, 0.1)" }}
               className="glass-card p-6 glow-hover transition-all duration-300"

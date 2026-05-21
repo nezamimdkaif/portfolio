@@ -69,6 +69,16 @@ RESUME FILE : nezami_uavs_cv_ism.pdf
 
 Click to download: ${resumeUrl}
 Or view directly in browser.
+`,
+    experience: `
+[PROFESSIONAL RESEARCH EXPERIENCE]
+--------------------------------------------------
+ROLE        : Project Research Intern
+FACILITY    : Drone Lab, Department of Electronics Engineering, IIT (ISM) Dhanbad
+INITIATIVE  : SwaYaan — MeitY, Government of India (Central Government Initiative)
+OBJECTIVES  : Fostering capacity building, hands-on human resource development in
+              Unmanned Aircraft Systems (UAS), drone electronics, and GNC algorithms.
+DIAGNOSTIC  : Interfacing sensor arrays, Pixhawk FC relays & GNC calibration loops.
 `
   };
 };
@@ -148,13 +158,14 @@ export default function TelemetryConsole() {
         text: `
 AVAILABLE SHELL DIRECTIVES:
 --------------------------------------------------
-- help      : Print this diagnostics manual.
-- isro      : View ISRO IROC 2026 docking challenge briefing.
-- sensors   : Run simulated self-tests on UAV sensor payloads.
-- drone     : Fetch UAV hexacopter technical frame specs.
-- telemetry : Toggle simulated telemetry logs in this terminal.
-- resume    : Output direct CV/Resume acquisition parameters.
-- clear     : Wipe screen command records.
+- help       : Print this diagnostics manual.
+- isro       : View ISRO IROC 2026 docking challenge briefing.
+- sensors    : Run simulated self-tests on UAV sensor payloads.
+- drone      : Fetch UAV hexacopter technical frame specs.
+- telemetry  : Toggle simulated telemetry logs in this terminal.
+- experience : Inspect active Summer Research Internship briefings.
+- resume     : Output direct CV/Resume acquisition parameters.
+- clear      : Wipe screen command records.
 `,
         type: "output"
       });
@@ -164,6 +175,8 @@ AVAILABLE SHELL DIRECTIVES:
       newHistory.push({ text: getCommandResponses().sensors, type: "output" });
     } else if (cleanCmd === "drone") {
       newHistory.push({ text: getCommandResponses().drone, type: "output" });
+    } else if (cleanCmd === "experience") {
+      newHistory.push({ text: getCommandResponses().experience, type: "output" });
     } else if (cleanCmd === "resume") {
       newHistory.push({ text: getCommandResponses().resume, type: "output" });
     } else if (cleanCmd === "clear") {
