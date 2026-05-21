@@ -142,34 +142,35 @@ export default function DroneShowcase() {
         console.warn("Failed to fetch dynamic telemetry, initiating client-side simulator.", err);
       }
 
-      // Live client-side simulation fallback for static deploys (GitHub Pages)
       const t = Date.now() / 1000;
-      const simulatedData = {
-        timestamp: new Date().toLocaleTimeString(),
+      const simulatedData: TelemetryData = {
+        timestamp: Date.now(),
+        status: Math.sin(t / 10) > 0 ? "DOCKED" : "DESCENDING_ALIGNMENT",
         uav: {
           model: "URSC Autonomous Guidance UAV",
-          status: Math.sin(t / 10) > 0 ? "DESCENDING" : "PATROL",
-          altitude: (8.5 + Math.sin(t) * 0.4).toFixed(2),
-          velocity: (1.2 + Math.cos(t) * 0.15).toFixed(2),
-          battery: (78 - (t % 3600) * 0.005).toFixed(1),
-          chargingCurrent: Math.sin(t / 10) > 0 ? "2.68" : "0.00",
-          rssi: (92 + Math.sin(t * 1.5) * 3).toFixed(0),
-          gps: {
-            lat: "22.3149",
-            lng: "87.3102",
-            sats: (14 + Math.round(Math.sin(t / 20) * 2)).toString()
+          battery: `${(78 - (t % 3600) * 0.005).toFixed(1)}%`,
+          currentDraw: Math.sin(t / 10) > 0 ? "-2.68A (CHARGING)" : "12.80A",
+          voltage: "15.27V",
+          coordinates: { lat: "22.3149", lng: "87.3102" },
+          altitude: `${(8.5 + Math.sin(t) * 0.4).toFixed(2)}m`,
+          heading: `${(184.2 + Math.sin(t * 0.5) * 5).toFixed(1)}°`,
+          orientation: {
+            pitch: `${(Math.sin(t / 2) * 2).toFixed(1)}°`,
+            roll: `${(Math.cos(t / 2) * 1.5).toFixed(1)}°`
           }
         },
-        dock: {
-          status: Math.sin(t / 10) > 0 ? "ALIGNING" : "LOCKED",
-          voltage: Math.sin(t / 10) > 0 ? "15.27" : "0.00",
-          alignmentOffset: {
-            x: (Math.sin(t / 2) * 5.2).toFixed(1),
-            y: (Math.cos(t / 2) * 4.8).toFixed(1)
-          }
+        groundStation: {
+          type: "Precision ArUco Charging Dock v2",
+          magneticLock: Math.sin(t / 10) > 0 ? "LOCKED" : "STANDBY",
+          chargerOutput: Math.sin(t / 10) > 0 ? "156.2W (Fast Latch)" : "0W",
+          alignmentError: {
+            x: `${(Math.sin(t / 2) * 5.2).toFixed(1)}mm`,
+            y: `${(Math.cos(t / 2) * 4.8).toFixed(1)}mm`
+          },
+          thermalState: "34.2°C"
         }
       };
-      setTelemetry(simulatedData as any);
+      setTelemetry(simulatedData);
     };
 
     fetchTelemetry();
