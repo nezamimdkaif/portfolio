@@ -1,127 +1,175 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin, GraduationCap, Award, Briefcase } from "lucide-react";
-
+import { MapPin, GraduationCap, Mail, Phone, Clock, Briefcase, Download, ArrowRight, Twitter, Facebook, Instagram, Linkedin } from "lucide-react";
 import { getAssetPath } from "@/utils";
 
 export default function About() {
+  const stats = [
+    { label: "UAV Projects", value: "15+" },
+    { label: "Years Experience", value: "2+" },
+    { label: "Tech Awards", value: "5+" }
+  ];
+
+  const infoCards = [
+    { icon: Briefcase, label: "Role", value: "Robotics Subsystem Lead" },
+    { icon: GraduationCap, label: "Degree", value: "B.Tech in ECE" },
+    { icon: MapPin, label: "Based in", value: "Dhanbad, India" },
+    { icon: Mail, label: "Email", value: "mdkaif.ece24@bitsindri.ac.in" },
+    { icon: Phone, label: "Phone", value: "+91 9801615695" },
+    { icon: Clock, label: "Availability", value: "Open to Work / Intern" }
+  ];
+
+  const skills = [
+    { name: "Embedded Systems & C/C++", level: 95 },
+    { name: "UAV Flight Control & Autonomy", level: 90 },
+    { name: "Sensor Interfacing & Calibration", level: 92 },
+    { name: "PCB & Circuit Design", level: 80 },
+    { name: "Linux & Python", level: 85 }
+  ];
+
   return (
-    <section id="about" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-24 relative bg-[#0d0d0d] px-6 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
-          <h2 className="font-display font-bold text-4xl sm:text-5xl mb-12 text-center">
-            <span className="text-accent-cyan">About</span> Me
+          <h2 className="font-display font-bold text-4xl sm:text-5xl text-white">
+            About <span className="text-accent-coral">Me</span>
           </h2>
+          <p className="text-gray-400 text-sm max-w-xl mx-auto mt-4">
+            Passionate about embedded firmware development, electronic hardware designs, and autonomous aerial robotics systems.
+          </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        {/* 2-Column Grid */}
+        <div className="grid lg:grid-cols-12 gap-12 items-start">
+          
+          {/* Left Column Card */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5"
           >
-            <motion.div 
-              whileHover={{ y: -6, boxShadow: "0 10px 40px rgba(0, 212, 255, 0.15)" }}
-              className="glass-card p-8 glow-hover transition-all duration-300"
-            >
-              <h3 className="font-display font-bold text-2xl mb-6 text-accent-cyan">
-                My Journey
-              </h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                I am deeply passionate about drone technology, hardware troubleshooting in field conditions, and practical aerial robotics. My journey in embedded systems and robotics has been driven by hands-on experience and a commitment to solving real-world engineering challenges.
-              </p>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                What sets me apart is my active role in the Aero and Robotics Club at BIT Sindri and my selection to lead hardware implementation for the prestigious ISRO IROC 2026 challenge. This opportunity has allowed me to work on cutting-edge UAV docking systems and autonomous flight technologies.
-              </p>
-              <p className="text-gray-300 leading-relaxed">
-                I thrive in environments where I can apply my technical skills to create innovative solutions, particularly in the field of autonomous systems and drone technology.
-              </p>
+            <div className="bg-[#1c1c1c] border border-white/5 rounded-2xl p-8 flex flex-col items-center text-center shadow-xl relative overflow-hidden">
               
-              <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4 items-center justify-between">
-                <span className="text-gray-400 text-sm font-medium">Looking for my detailed credentials?</span>
+              {/* Avatar circle */}
+              <div className="w-28 h-28 rounded-full border-2 border-accent-coral p-1 mb-4 overflow-hidden bg-black/40">
+                <img 
+                  src={getAssetPath("/moody_portrait.png")} 
+                  alt="Avatar portrait" 
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+
+              <h3 className="font-display font-bold text-2xl text-white mb-1">Md Kaif Nezami</h3>
+              <p className="text-gray-400 text-sm mb-4">Embedded & UAV Hardware Specialist</p>
+
+
+
+
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3 w-full mb-6">
                 <motion.a
                   href={getAssetPath("/nezami_uavs_cv_ism.pdf")}
+                  download="Md_Kaif_Nezami_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05, backgroundColor: "rgba(0, 212, 255, 0.15)" }}
                   whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center gap-2 bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer hover:border-accent-cyan/60"
+                  className="flex-1 bg-accent-coral hover:bg-accent-coral/95 text-white py-3 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <GraduationCap size={16} />
-                  View Full Resume
+                  <Download size={14} />
+                  Download CV
+                </motion.a>
+
+                <motion.a
+                  href="#contact"
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 border border-white/10 hover:border-accent-coral hover:bg-accent-coral/5 text-gray-300 hover:text-white py-3 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  Contact Me
+                  <ArrowRight size={14} />
                 </motion.a>
               </div>
-            </motion.div>
+
+              {/* Social icons */}
+              <div className="flex gap-3">
+                {[
+                  { icon: Twitter, url: "https://x.com/Nezamimd7" },
+                  { icon: Instagram, url: "https://instagram.com/nezamimdkaif" },
+                  { icon: Linkedin, url: "https://linkedin.com/in/md-kaif-nezami-029507313" }
+                ].map((soc, idx) => {
+                  const Icon = soc.icon;
+                  return (
+                    <a
+                      key={idx}
+                      href={soc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-full bg-white/5 border border-white/5 text-gray-400 hover:text-accent-coral flex items-center justify-center hover:bg-accent-coral/10 transition-all duration-300"
+                    >
+                      <Icon size={14} />
+                    </a>
+                  );
+                })}
+              </div>
+
+            </div>
           </motion.div>
 
+          {/* Right Column Content */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6"
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7 space-y-8"
           >
-            <motion.div 
-              whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0, 212, 255, 0.1)" }}
-              className="glass-card p-6 glow-hover transition-all duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <Briefcase className="text-accent-cyan" size={24} />
-                <h4 className="font-semibold text-lg">Active Internship</h4>
-              </div>
-              <p className="text-gray-300 mb-2">Project Intern — Drone Lab, IIT (ISM) Dhanbad</p>
-              <p className="text-gray-400 text-sm">
-                Working on the prestigious central government-funded <strong>SwaYaan</strong> initiative under MeitY, focusing on capacity building for human resource development in Unmanned Aircraft Systems (UAS).
-              </p>
-              <p className="text-gray-400 text-xs mt-2.5 font-semibold text-accent-cyan tracking-wider uppercase">
-                Summer 2026 | Drone Assembly, GNC Systems & Sensor Relays
-              </p>
-            </motion.div>
+            {/* Info grid */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {infoCards.map((card, i) => {
+                const Icon = card.icon;
+                return (
+                  <div key={i} className="bg-[#1c1c1c] border border-white/5 rounded-xl p-5 flex items-center gap-4 hover:border-accent-coral/25 transition-all duration-300">
+                    <div className="w-10 h-10 rounded-lg bg-accent-coral/10 border border-accent-coral/20 flex items-center justify-center text-accent-coral flex-shrink-0">
+                      <Icon size={18} />
+                    </div>
+                    <div>
+                      <p className="text-gray-400 text-3xs uppercase tracking-widest">{card.label}</p>
+                      <p className="text-white text-sm font-semibold mt-0.5 line-clamp-1">{card.value}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
 
-            <motion.div 
-              whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0, 212, 255, 0.1)" }}
-              className="glass-card p-6 glow-hover transition-all duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <MapPin className="text-accent-cyan" size={24} />
-                <h4 className="font-semibold text-lg">Location</h4>
+            {/* Core Skills section */}
+            <div className="bg-[#1c1c1c] border border-white/5 rounded-xl p-8 shadow-md">
+              <h3 className="font-display font-bold text-xl text-white mb-6">Core Skills / Technical Proficiency</h3>
+              
+              <div className="flex flex-wrap gap-2.5">
+                {skills.map((skill, idx) => (
+                  <span 
+                    key={idx} 
+                    className="px-3.5 py-2 bg-black/40 border border-white/5 rounded-xl text-xs font-semibold text-gray-300 hover:border-accent-coral/30 hover:text-white transition-all duration-300"
+                  >
+                    {skill.name}
+                  </span>
+                ))}
               </div>
-              <p className="text-gray-300">Dhanbad, India</p>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0, 212, 255, 0.1)" }}
-              className="glass-card p-6 glow-hover transition-all duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <GraduationCap className="text-accent-cyan" size={24} />
-                <h4 className="font-semibold text-lg">Education</h4>
-              </div>
-              <p className="text-gray-300 mb-2">Birsa Institute of Technology (BIT) Sindri</p>
-              <p className="text-gray-400 text-sm">B.Tech in Electronics and Communication Engineering</p>
-              <p className="text-gray-400 text-sm">2024-2028 | 1st Sem CGPA: 7.10</p>
-            </motion.div>
-
-            <motion.div 
-              whileHover={{ y: -4, boxShadow: "0 10px 30px rgba(0, 212, 255, 0.1)" }}
-              className="glass-card p-6 glow-hover transition-all duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <Award className="text-accent-cyan" size={24} />
-                <h4 className="font-semibold text-lg">Key Achievement</h4>
-              </div>
-              <p className="text-gray-300">
-                Selected to lead hardware implementation for ISRO IROC 2026 UAV Docking Challenge
-              </p>
-            </motion.div>
           </motion.div>
+
         </div>
       </div>
     </section>

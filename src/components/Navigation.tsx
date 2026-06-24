@@ -1,53 +1,29 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Terminal, Cpu, Settings, Sun, Moon } from "lucide-react";
+import { Menu, X, ChevronDown, Cpu, Terminal, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathname = usePathname();
 
-  // Load and apply theme from local storage on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-      setIsLightTheme(true);
-      document.documentElement.classList.add("light-theme");
-    } else {
-      setIsLightTheme(false);
-      document.documentElement.classList.remove("light-theme");
-    }
-
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleTheme = () => {
-    setIsLightTheme(prev => {
-      const nextTheme = !prev;
-      if (nextTheme) {
-        document.documentElement.classList.add("light-theme");
-        localStorage.setItem("theme", "light");
-      } else {
-        document.documentElement.classList.remove("light-theme");
-        localStorage.setItem("theme", "dark");
-      }
-      return nextTheme;
-    });
-  };
-
   const navLinks = [
     { name: "Home", href: pathname === "/" ? "#home" : "/" },
     { name: "About", href: pathname === "/" ? "#about" : "/#about" },
-    { name: "Skills", href: pathname === "/" ? "#skills" : "/#skills" },
-    { name: "Achievements", href: pathname === "/" ? "#achievements" : "/#achievements" },
+    { name: "Resume", href: pathname === "/" ? "#resume" : "/#resume" },
+    { name: "Portfolio", href: pathname === "/" ? "#portfolio" : "/#portfolio" },
     { name: "Contact", href: pathname === "/" ? "#contact" : "/#contact" },
   ];
 
@@ -57,190 +33,129 @@ export default function Navigation() {
     { name: "Drone Showcase", href: "/drone", icon: Settings },
   ];
 
-  const isLinkActive = (href: string) => {
-    if (href === "/projects" && pathname === "/projects") return true;
-    if (href === "/terminal" && pathname === "/terminal") return true;
-    if (href === "/" && pathname === "/") return true;
-    return false;
-  };
-
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled || pathname !== "/"
-          ? isLightTheme
-            ? "bg-slate-50/95 backdrop-blur-md border-b border-slate-200"
-            : "bg-background-dark/95 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent"
+          ? "bg-[#0a0a0a]/90 border-b border-white/5 backdrop-blur-md py-4"
+          : "bg-transparent py-6"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="flex items-center justify-between">
+          {/* Logo Brand Wordmark */}
           <div className="flex-shrink-0">
-            <Link href="/" className="font-display font-black text-2xl tracking-wider text-accent-cyan flex items-center gap-2 group">
-              <span className={`p-1.5 rounded-lg border transition-all duration-300 ${
-                isLightTheme
-                  ? "bg-accent-cyan/10 border-accent-cyan/20 group-hover:border-accent-cyan/40"
-                  : "bg-accent-cyan/15 border-accent-cyan/20 group-hover:border-accent-cyan/50"
-              }`}>
-                MKN
-              </span>
+            <Link href="/" className="font-display font-black text-2xl tracking-wider text-white hover:text-accent-coral transition-colors duration-300">
+              MKN<span className="text-accent-coral">.</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <div className={`flex items-center space-x-6 border-r pr-6 ${
-              isLightTheme ? "border-slate-200" : "border-white/10"
-            }`}>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`transition-all duration-200 text-sm font-semibold ${
-                    isLightTheme
-                      ? isLinkActive(link.href)
-                        ? "text-accent-cyan font-bold text-glow"
-                        : "text-slate-700 hover:text-accent-cyan"
-                      : isLinkActive(link.href)
-                        ? "text-accent-cyan font-bold text-glow"
-                        : "text-gray-300 hover:text-accent-cyan"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-
-            {/* Custom Subpage buttons with extra high-tech flare */}
-            <div className="flex items-center space-x-4">
-              {subPages.map((page) => {
-                const Icon = page.icon;
-                const active = isLinkActive(page.href);
-                return (
-                  <Link
-                    key={page.name}
-                    href={page.href}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold border transition-all duration-300 ${
-                      active
-                        ? "bg-accent-cyan/20 border-accent-cyan text-accent-cyan shadow-[0_0_15px_rgba(0,212,255,0.3)]"
-                        : isLightTheme
-                          ? "bg-slate-100 border-slate-200 text-slate-700 hover:border-accent-cyan/40 hover:text-accent-cyan"
-                          : "bg-white/5 border-white/10 text-gray-300 hover:border-accent-cyan/40 hover:text-accent-cyan"
-                    }`}
-                  >
-                    <Icon size={14} className={active ? "animate-pulse" : ""} />
-                    {page.name}
-                  </Link>
-                );
-              })}
-
-              {/* High-tech Space vs Lab Theme Switcher */}
-              <button
-                onClick={toggleTheme}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold font-mono border transition-all duration-300 cursor-pointer select-none ${
-                  isLightTheme
-                    ? "border-accent-cyan/40 bg-accent-cyan/5 text-accent-cyan hover:bg-accent-cyan/10"
-                    : "border-accent-cyan/30 bg-accent-cyan/5 text-accent-cyan hover:bg-accent-cyan/15 hover:shadow-[0_0_15px_rgba(0,212,255,0.25)]"
-                }`}
-                title="Toggle GCS Environment"
+          <div className="hidden lg:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="text-gray-300 hover:text-accent-coral text-sm font-semibold tracking-wide transition-colors duration-200"
               >
-                {isLightTheme ? (
-                  <>
-                    <Sun size={14} className="animate-spin text-amber-500" style={{ animationDuration: '8s' }} />
-                    <span>GCS: LIGHT MODE</span>
-                  </>
-                ) : (
-                  <>
-                    <Moon size={14} className="animate-pulse text-accent-cyan" />
-                    <span>GCS: DARK MODE</span>
-                  </>
-                )}
+                {link.name}
+              </a>
+            ))}
+
+            {/* Dropdown Menu */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
+              <button className="flex items-center gap-1.5 text-gray-300 hover:text-accent-coral text-sm font-semibold tracking-wide transition-colors duration-200 cursor-pointer">
+                Dropdown
+                <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute top-full right-0 w-52 pt-2 animate-fadeIn z-50">
+                  <div className="bg-[#1c1c1c] border border-white/5 rounded-xl shadow-2xl py-2">
+                    {subPages.map((page) => {
+                      const Icon = page.icon;
+                      return (
+                        <Link
+                          key={page.name}
+                          href={page.href}
+                          className="flex items-center gap-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-accent-coral/10 transition-colors duration-200"
+                        >
+                          <Icon size={16} className="text-accent-coral" />
+                          {page.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Get Started Coral Button */}
+            <a
+              href="#contact"
+              className="bg-accent-coral hover:bg-accent-coral/90 text-white px-6 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 hover:shadow-[0_4px_20px_rgba(251,58,93,0.3)] hover:-translate-y-0.5"
+            >
+              Get Started
+            </a>
           </div>
 
-          {/* Mobile menu & Theme toggle */}
-          <div className="md:hidden flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className={`p-2 border rounded-xl transition-all duration-200 select-none ${
-                isLightTheme
-                  ? "border-accent-cyan/35 bg-accent-cyan/5 text-accent-cyan"
-                  : "border-accent-cyan/30 bg-accent-cyan/5 text-accent-cyan"
-              }`}
-              title="Toggle theme"
-            >
-              {isLightTheme ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} />}
-            </button>
+          {/* Mobile Menu & Dropdown Button */}
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`transition-colors ${
-                isLightTheme ? "text-slate-700 hover:text-accent-cyan" : "text-gray-300 hover:text-accent-cyan"
-              }`}
+              className="text-gray-300 hover:text-accent-coral transition-colors duration-200"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
-        <div className={`md:hidden backdrop-blur-md border-b ${
-          isLightTheme
-            ? "bg-slate-50/98 border-slate-200"
-            : "bg-background-dark/98 border-white/10"
-        }`}>
-          <div className="px-4 py-6 space-y-4">
-            {/* Core Section Links */}
-            <div className={`space-y-2 border-b pb-4 ${
-              isLightTheme ? "border-slate-200" : "border-white/15"
-            }`}>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block transition-colors duration-200 text-sm font-semibold py-2 ${
-                    isLightTheme
-                      ? isLinkActive(link.href)
-                        ? "text-accent-cyan"
-                        : "text-slate-700 hover:text-accent-cyan"
-                      : isLinkActive(link.href)
-                        ? "text-accent-cyan"
-                        : "text-gray-300 hover:text-accent-cyan"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+        <div className="lg:hidden absolute top-full left-0 right-0 bg-[#0a0a0a]/95 border-b border-white/5 backdrop-blur-lg animate-slideDown z-50">
+          <div className="px-6 py-8 space-y-6">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block text-gray-300 hover:text-accent-coral text-base font-semibold transition-colors duration-200"
+              >
+                {link.name}
+              </a>
+            ))}
 
-            {/* Special Subpages */}
-            <div className="space-y-2.5">
+            {/* Subpages inside mobile menu */}
+            <div className="border-t border-white/5 pt-4 space-y-3">
+              <p className="text-xs uppercase tracking-widest text-gray-500 font-bold mb-2">Projects & Labs</p>
               {subPages.map((page) => {
                 const Icon = page.icon;
-                const active = isLinkActive(page.href);
                 return (
                   <Link
                     key={page.name}
                     href={page.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-semibold transition-all duration-300 ${
-                      active
-                        ? "bg-accent-cyan/15 border-accent-cyan text-accent-cyan"
-                        : isLightTheme
-                          ? "bg-slate-100 border-slate-200 text-slate-700"
-                          : "bg-white/5 border-white/10 text-gray-300"
-                    }`}
+                    className="flex items-center gap-3 text-sm text-gray-300 hover:text-white py-1 transition-colors duration-200"
                   >
-                    <Icon size={16} />
+                    <Icon size={16} className="text-accent-coral" />
                     {page.name}
                   </Link>
                 );
               })}
             </div>
+
+            <a
+              href="#contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="block text-center bg-accent-coral hover:bg-accent-coral/90 text-white py-3 rounded-full text-base font-bold transition-all duration-300"
+            >
+              Get Started
+            </a>
           </div>
         </div>
       )}

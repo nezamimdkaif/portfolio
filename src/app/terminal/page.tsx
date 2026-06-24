@@ -201,101 +201,49 @@ AVAILABLE SHELL DIRECTIVES:
   };
 
   return (
-    <main className="min-h-screen bg-[#030712] text-[#10b981] font-mono relative">
+    <main className="min-h-screen bg-[#030712] text-accent-coral font-mono relative">
       <Navigation />
 
       {/* Futuristic background grid overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(251,58,93,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(251,58,93,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 relative z-10">
         
         {/* Back Link */}
         <Link 
           href="/" 
-          className="inline-flex items-center gap-2 text-[#00d4ff] hover:text-[#00d4ff]/80 transition-colors text-sm font-bold mb-8 group"
+          className="inline-flex items-center gap-2 text-accent-coral hover:text-accent-coral/80 transition-colors text-sm font-bold mb-8 group"
         >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           Disconnect Telemetry Link
         </Link>
 
         {/* Dashboard Title */}
-        <div className="mb-10 border-b border-[#10b981]/25 pb-6">
+        <div className="mb-10 border-b border-accent-coral/25 pb-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <span className="text-[#00d4ff] font-bold tracking-widest text-xs uppercase flex items-center gap-2 mb-1">
-                <span className="w-2 h-2 bg-[#00d4ff] rounded-full animate-ping" />
+              <span className="text-accent-coral font-bold tracking-widest text-xs uppercase flex items-center gap-2 mb-1">
+                <span className="w-2 h-2 bg-accent-coral rounded-full animate-ping" />
                 UAV Flight Deck Diagnostic Console
               </span>
               <h1 className="font-display font-black text-3xl sm:text-4xl text-white">
-                HARDWARE <span className="text-[#00d4ff]">DIAGNOSTICS PANEL</span>
+                HARDWARE <span className="text-accent-coral">DIAGNOSTICS PANEL</span>
               </h1>
             </div>
-            <div className="flex items-center gap-2.5 bg-black/60 border border-[#10b981]/30 px-5 py-2.5 rounded-xl shadow-lg">
-              <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" />
+            <div className="flex items-center gap-2.5 bg-black/60 border border-accent-coral/30 px-5 py-2.5 rounded-xl shadow-lg">
+              <span className="w-2.5 h-2.5 bg-accent-coral rounded-full animate-pulse" />
               <span className="text-white text-xs font-bold uppercase tracking-wider">Telemetry Link Up</span>
             </div>
           </div>
         </div>
 
-        {/* Diagnostic Widgets Grid */}
-        <div className="grid lg:grid-cols-4 gap-6 mb-8">
-          
-          {/* Controller Card */}
-          <div className="bg-black/60 border border-[#10b981]/20 rounded-xl p-5 shadow-xl flex items-center gap-4 hover:border-[#10b981]/40 transition-colors duration-300">
-            <div className="p-3 bg-[#10b981]/10 rounded-lg">
-              <Cpu size={24} className="text-[#10b981]" />
-            </div>
-            <div>
-              <p className="text-gray-400 text-3xs uppercase tracking-wider">Flight Controller</p>
-              <p className="text-white font-bold text-sm">Pixhawk OrangeCube</p>
-              <p className="text-[#10b981] text-3xs font-semibold">ArduPilot FW v4.5</p>
-            </div>
-          </div>
-
-          {/* Battery Card */}
-          <div className="bg-black/60 border border-[#10b981]/20 rounded-xl p-5 shadow-xl flex items-center gap-4 hover:border-[#10b981]/40 transition-colors duration-300">
-            <div className="p-3 bg-[#10b981]/10 rounded-lg">
-              <Battery size={24} className="text-[#10b981]" />
-            </div>
-            <div>
-              <p className="text-gray-400 text-3xs uppercase tracking-wider">Main Power Battery</p>
-              <p className="text-white font-bold text-sm">{batteryVolt}V (4S Lipo)</p>
-              <p className="text-[#10b981] text-3xs font-semibold">86% capacity - Norm</p>
-            </div>
-          </div>
-
-          {/* Satellite Card */}
-          <div className="bg-black/60 border border-[#10b981]/20 rounded-xl p-5 shadow-xl flex items-center gap-4 hover:border-[#10b981]/40 transition-colors duration-300">
-            <div className="p-3 bg-[#10b981]/10 rounded-lg">
-              <Signal size={24} className="text-[#10b981]" />
-            </div>
-            <div>
-              <p className="text-gray-400 text-3xs uppercase tracking-wider">GPS Satellite Locks</p>
-              <p className="text-white font-bold text-sm">GNSS: 3D Fix ({satellites})</p>
-              <p className="text-[#10b981] text-3xs font-semibold">RTK Lock HDOP: 0.82</p>
-            </div>
-          </div>
-
-          {/* Orientation Card */}
-          <div className="bg-black/60 border border-[#10b981]/20 rounded-xl p-5 shadow-xl flex items-center gap-4 hover:border-[#10b981]/40 transition-colors duration-300">
-            <div className="p-3 bg-[#10b981]/10 rounded-lg">
-              <Compass size={24} className="text-[#10b981]" />
-            </div>
-            <div>
-              <p className="text-gray-400 text-3xs uppercase tracking-wider">UAV Stabilization Status</p>
-              <p className="text-white font-bold text-sm">Yaw: {yaw}°</p>
-              <p className="text-[#10b981] text-3xs font-semibold">P: {pitch}° | R: {roll}°</p>
-            </div>
-          </div>
-        </div>
-
         {/* Command Line Terminal Display Frame */}
-        <div className="bg-black/90 border-2 border-[#10b981]/30 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.15)]">
+        <div className="bg-black/90 border-2 border-accent-coral/30 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(251,58,93,0.15)]">
           
           {/* Terminal Console Titlebar */}
-          <div className="bg-[#050b14] border-b border-[#10b981]/25 px-6 py-4 flex items-center justify-between">
+          <div className="bg-[#050b14] border-b border-accent-coral/25 px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <TermIcon size={18} className="text-[#10b981]" />
+              <TermIcon size={18} className="text-accent-coral" />
               <span className="text-white text-xs font-bold uppercase tracking-widest">
                 INTEGRATED UAV OPERATIONAL DIAGNOSTIC SHELL
               </span>
@@ -312,7 +260,7 @@ AVAILABLE SHELL DIRECTIVES:
             {history.map((line, idx) => {
               if (line.type === "input") {
                 return (
-                  <div key={idx} className="text-[#00d4ff] font-semibold">
+                  <div key={idx} className="text-accent-coral font-semibold">
                     {line.text}
                   </div>
                 );
@@ -336,9 +284,9 @@ AVAILABLE SHELL DIRECTIVES:
           {/* Terminal Shell Input Bar */}
           <form 
             onSubmit={handleCommandSubmit}
-            className="border-t border-[#10b981]/25 bg-[#050b14] px-6 py-4 flex items-center gap-2"
+            className="border-t border-accent-coral/25 bg-[#050b14] px-6 py-4 flex items-center gap-2"
           >
-            <span className="text-[#00d4ff] font-bold select-none text-xs sm:text-sm">
+            <span className="text-accent-coral font-bold select-none text-xs sm:text-sm">
               mkn-uav-station:~ nezami$
             </span>
             <input 
@@ -346,13 +294,13 @@ AVAILABLE SHELL DIRECTIVES:
               required
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              className="flex-1 bg-transparent text-[#10b981] placeholder-[#10b981]/30 focus:outline-none border-none p-0 text-xs sm:text-sm font-mono caret-[#10b981]"
+              className="flex-1 bg-transparent text-accent-coral placeholder-accent-coral/30 focus:outline-none border-none p-0 text-xs sm:text-sm font-mono caret-accent-coral"
               placeholder="type 'help' to run self-tests..."
               autoFocus
             />
             <button 
               type="submit"
-              className="text-[#00d4ff] hover:text-[#00d4ff]/80 transition-colors cursor-pointer"
+              className="text-accent-coral hover:text-accent-coral/80 transition-colors cursor-pointer"
             >
               <ArrowRight size={18} />
             </button>

@@ -10,13 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         background: {
-          dark: "#0a1428",
-          lighter: "#1a1f3a",
+          dark: "#0a0a0a",
+          lighter: "#1a1a1a",
         },
         accent: {
-          cyan: "#00d4ff",
-          glow: "rgba(0, 212, 255, 0.5)",
+          coral: "#fb3a5d",
+          cyan: "#fb3a5d", // mapped to coral to keep subpages integrated
+          glow: "rgba(251, 58, 93, 0.4)",
         },
+        card: {
+          bg: "#1c1c1c",
+        }
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

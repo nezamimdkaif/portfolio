@@ -1,121 +1,156 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle, ArrowRight } from "lucide-react";
-
-const projects = [
-  {
-    title: "ISRO IROC 2026 Autonomous UAV Docking Challenge",
-    period: "Jan 2026 - Present",
-    description: "Qualified Round 1 and Round 2; currently competing in the Round 3 full system autonomy phase. Leading the docking station design improvement as part of hardware implementation.",
-    highlights: [
-      "Spearheading docking station redesign to improve mechanical precision and reliable UAV docking alignment.",
-      "Integrated proximity, IMU, and ultrasonic sensors for precision landing and autonomous docking operations.",
-      "Performed component selection, circuit design, system integration, and hardware troubleshooting.",
-    ],
-    timeline: [
-      { phase: "Round 1", status: "Qualified" },
-      { phase: "Round 2", status: "Qualified" },
-      { phase: "Round 3", status: "Current: Full System Autonomy Phase" },
-    ],
-    featured: true,
-  },
-  {
-    title: "Custom Drone IIT ISM Bootcamp",
-    period: "Jun 2024",
-    description: "Assembled a high-performance hexacopter using an OrangeCube flight controller during an intensive, hands-on drone bootcamp at IIT ISM.",
-    highlights: [
-      "Handled complete component integration and physical hardware layout.",
-      "Conducted PID tuning and executed autonomous waypoint mission planning.",
-    ],
-    featured: false,
-  },
-  {
-    title: "UAV Payload Setup - Camera Module & Wireless Transmission",
-    period: "2024",
-    description: "Developed a lightweight, functional UAV payload integration setup.",
-    highlights: [
-      "Integrated a camera module with wireless data transmission on a physical UAV frame.",
-      "Managed custom wiring, secure module mounting, and basic radio signal transmission testing.",
-    ],
-    featured: false,
-  },
-];
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, ArrowUpRight, FolderGit2 } from "lucide-react";
 
 export default function Projects() {
+  const categories = ["All", "UAVs", "Embedded", "Robotics"];
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const projects = [
+    {
+      title: "ISRO IROC 2026 UAV Docking Challenge",
+      period: "Jan 2026 - Present",
+      description: "Qualified Rounds 1 & 2; currently preparing for the Round 3 full autonomy flight phase. Designing a physical docking lock mechanism, integrating ultrasonic ranging, and sensor handshake relays with OrangeCube controllers.",
+      categories: ["UAVs", "Robotics", "Embedded"],
+      highlights: [
+        "Mechanical structure layout design for stable alignment under heavy sway",
+        "Sensors relay code: Arduino interfaces mapping to Pixhawk autopilot via MAVLink",
+        "Field telemetry troubleshooting, power distribution circuits, and docking lock actuators"
+      ],
+      link: "https://github.com/nezamimdkaif/ISRO-IROC-2026"
+    },
+    {
+      title: "Custom Hexacopter Flight Platform",
+      period: "June 2024",
+      description: "Assembled a 550mm class carbon fiber hexacopter utilizing Pixhawk OrangeCube flight controller. Calibrated inertial sensors, tuned PID parameters, and configured autonomous waypoint navigation protocols.",
+      categories: ["UAVs"],
+      highlights: [
+        "Full frame wiring layout, power distribution board setups, and ESC calibrations",
+        "Calibrated magnetometer tilt-compensation and barometer altitude relays",
+        "Conducted mission waypoint maps and autonomous return-to-launch fail-safes"
+      ],
+      link: "https://github.com/nezamimdkaif/uav-hexacopter-flight"
+    },
+    {
+      title: "Lightweight UAV Payload Camera Relay",
+      period: "2024",
+      description: "Integrated an ESP32-CAM and RF wireless video transmitter node onto a physical drone body. Enabled a light real-time telemetry stream back to the ground control station.",
+      categories: ["UAVs", "Embedded"],
+      highlights: [
+        "Lightweight housing design to minimize aerodynamic drag and payload weight",
+        "Custom ESP32-CAM script configuring RTSP video stream packet transmission",
+        "Installed physical filters to avoid RF interference from main brushless motor lines"
+      ],
+      link: "https://github.com/nezamimdkaif/payload-camera-transmission"
+    }
+  ];
+
+  const filteredProjects = activeFilter === "All"
+    ? projects
+    : projects.filter(p => p.categories.includes(activeFilter));
+
   return (
-    <section id="projects" className="py-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="portfolio" className="py-24 bg-[#0a0a0a] px-6 sm:px-8 lg:px-12 relative">
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Section Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          <h2 className="font-display font-bold text-4xl sm:text-5xl mb-12 text-center">
-            Featured <span className="text-accent-cyan">Projects</span>
+          <h2 className="font-display font-bold text-4xl sm:text-5xl text-white">
+            My <span className="text-accent-coral">Portfolio</span>
           </h2>
+          <p className="text-gray-400 text-sm max-w-xl mx-auto mt-4">
+            Filter and explore projects documenting hardware integrations, autonomous flight tuning, and microcontroller designs.
+          </p>
         </motion.div>
 
-        <div className="space-y-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 border cursor-pointer ${
+                activeFilter === cat
+                  ? "bg-accent-coral border-accent-coral text-white shadow-[0_4px_15px_rgba(251,58,93,0.3)]"
+                  : "bg-[#1c1c1c] border-white/5 text-gray-400 hover:text-white hover:border-white/10"
+              }`}
             >
-              <div className={`glass-card p-8 glow-hover ${project.featured ? 'border-accent-cyan/30' : ''}`}>
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                  <div>
-                    <h3 className="font-display font-bold text-2xl mb-2 text-white">
-                      {project.title}
-                    </h3>
-                    <p className="text-accent-cyan text-sm font-medium">{project.period}</p>
-                  </div>
-                  {project.featured && (
-                    <span className="px-4 py-2 bg-accent-cyan/20 text-accent-cyan text-sm font-semibold rounded-full border border-accent-cyan/30">
-                      Featured Project
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-gray-300 leading-relaxed mb-6">{project.description}</p>
-
-                <div className="space-y-3 mb-6">
-                  {project.highlights.map((highlight, highlightIndex) => (
-                    <div key={highlightIndex} className="flex items-start gap-3">
-                      <CheckCircle className="text-accent-cyan flex-shrink-0 mt-1" size={18} />
-                      <span className="text-gray-400">{highlight}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {project.timeline && (
-                  <div className="mt-6 pt-6 border-t border-white/10">
-                    <h4 className="font-semibold text-lg mb-4 text-accent-cyan">Progress Timeline</h4>
-                    <div className="flex flex-wrap gap-4">
-                      {project.timeline.map((item, timelineIndex) => (
-                        <div
-                          key={timelineIndex}
-                          className={`px-4 py-3 rounded-lg border ${
-                            item.status.includes("Current")
-                              ? "bg-accent-cyan/20 border-accent-cyan"
-                              : "bg-white/5 border-white/10"
-                          }`}
-                        >
-                          <p className="text-sm font-semibold text-white mb-1">{item.phase}</p>
-                          <p className="text-xs text-gray-400">{item.status}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </motion.div>
+              {cat}
+            </button>
           ))}
         </div>
+
+        {/* Project Grid */}
+        <motion.div 
+          layout
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, idx) => (
+              <motion.div
+                layout
+                key={project.title}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.5 }}
+                className="bg-[#1c1c1c] border border-white/5 rounded-xl p-6 flex flex-col justify-between hover:border-accent-coral/25 transition-all duration-300 shadow-lg group relative overflow-hidden h-full"
+              >
+                {/* Accent glow corner */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-accent-coral/5 rounded-bl-full pointer-events-none group-hover:bg-accent-coral/10 transition-all duration-500" />
+                
+                <div>
+                  {/* Category tag badges */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.categories.map((c) => (
+                      <span key={c} className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-accent-coral/10 text-accent-coral border border-accent-coral/15">
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+
+                  <h3 className="font-display font-bold text-xl text-white mb-2 leading-snug group-hover:text-accent-coral transition-colors duration-300 flex items-start justify-between gap-4">
+                    {project.title}
+                    <FolderGit2 className="text-gray-600 group-hover:text-accent-coral transition-colors flex-shrink-0" size={18} />
+                  </h3>
+                  
+                  <p className="text-accent-coral text-xs font-semibold mb-3">{project.period}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6">{project.description}</p>
+
+                  <div className="space-y-2 mb-6">
+                    {project.highlights.map((hl, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <CheckCircle2 className="text-accent-coral flex-shrink-0 mt-0.5" size={14} />
+                        <span className="text-gray-400 text-xs leading-relaxed">{hl}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-white hover:text-accent-coral text-xs font-bold mt-auto transition-colors duration-200 cursor-pointer"
+                  >
+                    View Source Repository
+                    <ArrowUpRight size={14} />
+                  </a>
+                )}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
       </div>
     </section>
   );
