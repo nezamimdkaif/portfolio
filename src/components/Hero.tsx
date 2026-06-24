@@ -75,11 +75,6 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
           className="lg:col-span-7 flex flex-col items-start space-y-6 text-left"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/5 bg-[#1c1c1c]/50 text-accent-coral text-xs font-semibold uppercase tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-coral animate-ping" />
-            ISRO IROC 2026 Autonomy Stack Lead
-          </div>
-
           <h1 className="font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl text-white leading-tight">
             Hi, I&apos;m <span className="text-white">Md Kaif Nezami</span>
           </h1>
@@ -91,7 +86,7 @@ export default function Hero() {
           </div>
 
           <p className="text-gray-400 text-base sm:text-lg leading-relaxed max-w-xl">
-            Electronics & Communication Engineering student at BIT Sindri. Currently leading hardware docking subsystem designs for the ISRO IROC 2026 Autonomy Challenge, and developing aerial autonomy control loops under MeitY&apos;s SwaYaan UAV project at IIT (ISM) Dhanbad.
+            Electronics &amp; Communication Engineering student at BIT Sindri, currently diving deep into robotics mechanisms, engineering mathematics, and ROS (Robot Operating System). Simultaneously, as an intern at IIT (ISM) Dhanbad Drone Lab, I work on drone telemetry setups, sensor integration, and component validation—honing hands-on research and development skills by decoding datasheets and running system-level trials.
           </p>
 
           {/* Social Icons list */}
