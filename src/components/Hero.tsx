@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { getAssetPath } from "@/utils";
-import AnimatedDrone from "./AnimatedDrone";
 
 const titles = [
   "Embedded Systems Engineer",
@@ -60,11 +59,6 @@ export default function Hero() {
 
       {/* Grid overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none -z-10" />
-
-      {/* Floating Animated Drone in Background */}
-      <div className="absolute left-6 md:left-12 bottom-12 w-48 sm:w-64 md:w-80 opacity-25 pointer-events-none select-none z-0">
-        <AnimatedDrone showBackground={false} />
-      </div>
 
       <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center relative z-10">
         
