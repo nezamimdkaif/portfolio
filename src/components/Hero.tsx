@@ -30,6 +30,8 @@ export default function Hero() {
 
   return (
     <section id="top" className="relative">
+      {/* soft blue tint: its own layer BEHIND the background drone (z -20 < drone z -10) */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[#eff6ff] via-white to-white" />
       {/* ---------- desktop ---------- */}
       <div className="relative hidden lg:block">
        <div className="relative lg:h-[100svh] lg:min-h-[640px]">
@@ -69,6 +71,9 @@ export default function Hero() {
                 </Magnetic>
               ))}
             </p>
+            <p className="mt-8 max-w-md text-[13px] leading-relaxed text-paper-mute">
+              3D: NASA&apos;s Perseverance rover (model: NASA/JPL-Caltech), which navigates Mars without GPS, the kind of autonomy I work on.
+            </p>
           </motion.div>
         </div>
        </div>
@@ -76,12 +81,9 @@ export default function Hero() {
 
       {/* ---------- phones ---------- */}
       <div className="lg:hidden">
-        <div className="relative h-[46svh] min-h-[300px] pt-14">
-          {wide === false && <DroneHero className="absolute inset-0" />}
-          <p className="pointer-events-none absolute bottom-2 left-0 right-0 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-paper-mute">
-            Tap to steer
-          </p>
-        </div>
+        {/* the drone flies in the background, behind all content */}
+        {wide === false && <DroneHero background className="pointer-events-none fixed inset-0 -z-10" />}
+        <div aria-hidden className="h-[44svh] min-h-[280px]" />
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -126,7 +128,7 @@ export default function Hero() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="group relative grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-[15px] transition-colors hover:bg-white/[0.03]"
+              className="group relative grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-[15px] transition-colors hover:bg-ink-900"
             >
               <span className="font-mono text-[13px] leading-6 text-paper-mute">{n.date}</span>
               <span className="leading-6 text-paper-dim transition-colors group-hover:text-paper">

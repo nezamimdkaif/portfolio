@@ -8,54 +8,11 @@ import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.j
 import { getAssetPath } from "@/utils";
 
 /*
- * NASA's Perseverance Mars rover (3D model: NASA/JPL-Caltech) on a patch of Martian ground.
+ * NASA's Perseverance Mars rover (3D model: NASA/JPL-Caltech), shown like a product shot on white.
  * - The rover's remote-sensing mast head (Mastcam-Z + NavCams) tracks the mouse cursor.
  * - The rover body turns slightly with the mouse; scrolling orbits the camera around it.
  * Model compressed with meshopt + WebP (11.7 MB -> 2.3 MB).
  */
-
-function groundTexture() {
-  // procedural Martian soil: rust base, darker blotches, fine grain
-  const c = document.createElement("canvas");
-  c.width = c.height = 512;
-  const g = c.getContext("2d")!;
-  g.fillStyle = "#7a3f24";
-  g.fillRect(0, 0, 512, 512);
-  let s = 7;
-  const r = () => ((s = (s * 16807) % 2147483647) / 2147483647);
-  for (let i = 0; i < 900; i++) {
-    const x = r() * 512, y = r() * 512, rad = 4 + r() * 40;
-    const grd = g.createRadialGradient(x, y, 0, x, y, rad);
-    const dark = r() < 0.5;
-    grd.addColorStop(0, dark ? "rgba(60,28,16,0.35)" : "rgba(170,98,58,0.28)");
-    grd.addColorStop(1, "rgba(0,0,0,0)");
-    g.fillStyle = grd;
-    g.fillRect(x - rad, y - rad, rad * 2, rad * 2);
-  }
-  for (let i = 0; i < 9000; i++) {
-    g.fillStyle = r() < 0.5 ? "rgba(40,18,10,0.35)" : "rgba(200,130,90,0.25)";
-    g.fillRect(r() * 512, r() * 512, 1, 1);
-  }
-  const t = new THREE.CanvasTexture(c);
-  t.colorSpace = THREE.SRGBColorSpace;
-  t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.repeat.set(2.2, 2.2);
-  return t;
-}
-
-function fadeAlpha() {
-  // white centre -> black rim, so the ground melts into space
-  const c = document.createElement("canvas");
-  c.width = c.height = 256;
-  const g = c.getContext("2d")!;
-  const grd = g.createRadialGradient(128, 128, 30, 128, 128, 128);
-  grd.addColorStop(0, "#fff");
-  grd.addColorStop(0.45, "#aaa");
-  grd.addColorStop(1, "#000");
-  g.fillStyle = grd;
-  g.fillRect(0, 0, 256, 256);
-  return new THREE.CanvasTexture(c);
-}
 
 export default function RoverHero({ className = "" }: { className?: string }) {
   const mount = useRef<HTMLDivElement>(null);
@@ -80,10 +37,10 @@ export default function RoverHero({ className = "" }: { className?: string }) {
     const scene = new THREE.Scene();
     const pmrem = new THREE.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environmentIntensity = 0.45;
+    scene.environmentIntensity = 0.75;
 
     // Martian sun: warm, low, from the front-left; cool rim from behind
-    const sunLight = new THREE.DirectionalLight(0xffd9b0, 2.6);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.4);
     sunLight.position.set(-4, 5, 4);
     sunLight.castShadow = true;
     sunLight.shadow.mapSize.set(1024, 1024);
@@ -96,29 +53,13 @@ export default function RoverHero({ className = "" }: { className?: string }) {
     const rim = new THREE.DirectionalLight(0x6aa0ff, 1.6);
     rim.position.set(3, 2.5, -5);
     scene.add(rim);
-    scene.add(new THREE.HemisphereLight(0xffe2c6, 0x2a140c, 0.35));
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xdbe4f0, 0.6));
 
-    // ground patch with a few rocks
-    const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(4.2, 96),
-      new THREE.MeshStandardMaterial({ map: groundTexture(), alphaMap: fadeAlpha(), transparent: true, roughness: 1, metalness: 0 })
-    );
+    // invisible ground that only catches the rover's soft shadow (clean product look on white)
+    const ground = new THREE.Mesh(new THREE.CircleGeometry(6, 64), new THREE.ShadowMaterial({ opacity: 0.18 }));
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
-    const rockMat = new THREE.MeshStandardMaterial({ color: 0x4e2817, roughness: 1 });
-    let rs = 11;
-    const rr = () => ((rs = (rs * 16807) % 2147483647) / 2147483647);
-    for (let i = 0; i < 16; i++) {
-      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.025 + rr() * 0.07, 1), rockMat);
-      const a = rr() * Math.PI * 2;
-      const d = 1.7 + rr() * 1.6;
-      rock.position.set(Math.cos(a) * d, 0.02, Math.sin(a) * d);
-      rock.rotation.set(rr() * 3, rr() * 3, rr() * 3);
-      rock.scale.y = 0.6;
-      rock.castShadow = rock.receiveShadow = true;
-      scene.add(rock);
-    }
 
     const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 200);
     const look = new THREE.Vector3(0, 0.9, 0);

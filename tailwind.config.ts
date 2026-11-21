@@ -6,21 +6,21 @@ const config: Config = {
     extend: {
       colors: {
         ink: {
-          950: "#0a0a0a", // page: black
-          900: "#111111", // panels
-          800: "#171717", // raised
-          700: "#262626", // hairlines
-          600: "#3a3a3a",
+          950: "#ffffff", // page
+          900: "#f8fafc", // section bands / panels (slate-50)
+          800: "#f1f5f9", // hover (slate-100)
+          700: "#e2e8f0", // hairlines (slate-200)
+          600: "#cbd5e1", // stronger borders (slate-300)
         },
         paper: {
-          DEFAULT: "#f5f5f5", // main text: white
-          dim: "#cfcfcf", // secondary text
-          mute: "#b3b3b3", // captions
+          DEFAULT: "#0f172a", // main text (slate-900)
+          dim: "#334155", // secondary text (slate-700)
+          mute: "#64748b", // captions (slate-500)
         },
         signal: {
-          DEFAULT: "#3b82f6", // electric blue accent
+          DEFAULT: "#2563eb", // blue-600 accent
         },
-        mint: "#e5e5e5", // neutral data colour (paired with blue)
+        mint: "#94a3b8", // neutral data colour (paired with blue)
       },
       fontFamily: {
         sans: ["var(--font-plex-sans)", "system-ui", "sans-serif"],

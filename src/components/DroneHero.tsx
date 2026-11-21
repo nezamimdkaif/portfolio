@@ -117,7 +117,7 @@ function buildDrone(glow: THREE.Texture) {
     const led = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 8), mat);
     led.position.set(mx, -0.01, mz);
     drone.add(led);
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color, transparent: true, blending: THREE.NormalBlending, depthWrite: false }));
     sprite.scale.setScalar(0.45);
     sprite.position.copy(led.position);
     drone.add(sprite);
@@ -133,7 +133,7 @@ function buildDrone(glow: THREE.Texture) {
   return { drone, props, leds, rearLeds };
 }
 
-export default function DroneHero({ className = "" }: { className?: string }) {
+export default function DroneHero({ className = "", background = false }: { className?: string; background?: boolean }) {
   const mount = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
 
@@ -175,7 +175,7 @@ export default function DroneHero({ className = "" }: { className?: string }) {
     scene.add(rig);
 
     // soft blue glow under the craft
-    const under = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: BLUE, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const under = new THREE.Sprite(new THREE.SpriteMaterial({ map: glow, color: BLUE, transparent: true, opacity: 0.35, blending: THREE.NormalBlending, depthWrite: false }));
     under.scale.set(3.2, 1.0, 1);
     scene.add(under);
 
@@ -183,7 +183,7 @@ export default function DroneHero({ className = "" }: { className?: string }) {
     const ringGeo = new THREE.RingGeometry(0.42, 0.46, 48);
     const rings: { m: THREE.Mesh; t: number }[] = [];
     for (let i = 0; i < 4; i++) {
-      const m = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false }));
+      const m = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: BLUE, transparent: true, opacity: 0, side: THREE.DoubleSide, blending: THREE.NormalBlending, depthWrite: false }));
       m.rotation.x = -Math.PI / 2;
       scene.add(m);
       rings.push({ m, t: i / 4 });
@@ -199,7 +199,7 @@ export default function DroneHero({ className = "" }: { className?: string }) {
     tGeo.setAttribute("color", new THREE.BufferAttribute(tCol, 3));
     const trail = new THREE.Points(
       tGeo,
-      new THREE.PointsMaterial({ size: 0.16, map: glow, vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true })
+      new THREE.PointsMaterial({ size: 0.16, map: glow, vertexColors: true, transparent: true, blending: THREE.NormalBlending, depthWrite: false, sizeAttenuation: true })
     );
     trail.frustumCulled = false;
     scene.add(trail);
@@ -213,7 +213,7 @@ export default function DroneHero({ className = "" }: { className?: string }) {
       renderer.domElement.style.width = "100%";
       renderer.domElement.style.height = "100%";
       camera.aspect = r.width / Math.max(1, r.height);
-      camera.position.z = camera.aspect < 0.8 ? 6.0 : 5.0;
+      camera.position.z = background ? (camera.aspect < 0.8 ? 8.2 : 7.0) : camera.aspect < 0.8 ? 6.0 : 5.0;
       camera.updateProjectionMatrix();
     };
     resize();
@@ -228,8 +228,10 @@ export default function DroneHero({ className = "" }: { className?: string }) {
       target.y = -((e.clientY - r.top) / r.height - 0.5) * 2;
       target.active = 2.5; // seconds of "follow"
     };
-    el.addEventListener("pointerdown", onPoint, { passive: true });
-    el.addEventListener("pointermove", onPoint, { passive: true });
+    // background mode: a tap anywhere on the page steers it; otherwise only taps on the canvas
+    const tapTarget: HTMLElement | Window = background ? window : el;
+    tapTarget.addEventListener("pointerdown", onPoint as EventListener, { passive: true });
+    if (!background) el.addEventListener("pointermove", onPoint, { passive: true });
 
     let visible = true;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
@@ -258,13 +260,21 @@ export default function DroneHero({ className = "" }: { className?: string }) {
 
       // where the drone wants to be: figure-8 hover, or your finger, and climb away on scroll
       const scroll = Math.min(1, window.scrollY / Math.max(1, el.getBoundingClientRect().height + 200));
-      const hover = new THREE.Vector3(Math.sin(t * 0.7) * 0.55, Math.sin(t * 1.4) * 0.2 - 0.05, Math.cos(t * 0.7) * 0.35);
+      const hover = background
+        ? new THREE.Vector3(
+            Math.sin(t * 0.45) * 0.9 + Math.sin(window.scrollY * 0.0016) * 0.7,
+            1.15 + Math.sin(t * 1.1) * 0.18,
+            Math.cos(t * 0.45) * 0.6
+          )
+        : new THREE.Vector3(Math.sin(t * 0.7) * 0.55, Math.sin(t * 1.4) * 0.2 - 0.05, Math.cos(t * 0.7) * 0.35);
       if (target.active > 0) {
         target.active -= dt;
-        hover.set(target.x * 1.3, target.y * 0.9, 0.3);
+        hover.set(target.x * (background ? 1.8 : 1.3), target.y * (background ? 2.2 : 0.9) + (background ? 0.6 : 0), 0.3);
       }
-      hover.y += scroll * 3.2;
-      hover.z -= scroll * 3;
+      if (!background) {
+        hover.y += scroll * 3.2;
+        hover.z -= scroll * 3;
+      }
 
       const prev = pos.clone();
       pos.lerp(hover, Math.min(1, dt * (target.active > 0 ? 2.6 : 1.4)));
@@ -279,7 +289,7 @@ export default function DroneHero({ className = "" }: { className?: string }) {
       // tricks: barrel roll or front flip, with a little hop
       if (!reduce) {
         nextTrick -= dt;
-        if (trickT < 0 && nextTrick <= 0 && scroll < 0.3) {
+        if (trickT < 0 && nextTrick <= 0 && (background || scroll < 0.3)) {
           trickT = 0;
           trickKind = (trickKind + 1) % 2;
         }
@@ -331,12 +341,18 @@ export default function DroneHero({ className = "" }: { className?: string }) {
         r.t = (r.t + dt * 0.7) % 1;
         r.m.position.set(pos.x, pos.y - 0.35 - r.t * 0.9, pos.z);
         r.m.scale.setScalar(0.8 + r.t * 2.2);
-        (r.m.material as THREE.MeshBasicMaterial).opacity = (1 - r.t) * 0.35 * (1 - scroll);
+        (r.m.material as THREE.MeshBasicMaterial).opacity = (1 - r.t) * 0.35 * (background ? 0.6 : 1 - scroll);
       }
       under.position.set(pos.x, pos.y - 0.9, pos.z);
-      under.material.opacity = 0.3 * (1 - scroll);
+      under.material.opacity = 0.3 * (background ? 0.6 : 1 - scroll);
 
-      camera.lookAt(pos.x * 0.35, pos.y + 0.3, 0);
+      if (background) {
+        camera.lookAt(pos.x * 0.15, 0.35, 0);
+        // full strength over the hero, then a faint presence behind the content
+        const k = window.scrollY / Math.max(1, window.innerHeight);
+        el.style.opacity = String(Math.max(0.14, Math.min(1, 1 - (k - 0.25) * 1.6)));
+      }
+      else camera.lookAt(pos.x * 0.35, pos.y + 0.3, 0);
       renderer.render(scene, camera);
     };
     raf = requestAnimationFrame(loop);
@@ -345,7 +361,7 @@ export default function DroneHero({ className = "" }: { className?: string }) {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      el.removeEventListener("pointerdown", onPoint);
+      tapTarget.removeEventListener("pointerdown", onPoint as EventListener);
       el.removeEventListener("pointermove", onPoint);
       pmrem.dispose();
       glow.dispose();
@@ -358,14 +374,14 @@ export default function DroneHero({ className = "" }: { className?: string }) {
       renderer.dispose();
       el.removeChild(renderer.domElement);
     };
-  }, []);
+  }, [background]);
 
   return (
     <div
       ref={mount}
       role="img"
       aria-label="3D quadcopter that hovers, does rolls and flips with light trails; tap to steer it."
-      className={`touch-pan-y transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"} ${className}`}
+      className={`${background ? "" : "touch-pan-y"} transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"} ${className}`}
     />
   );
 }

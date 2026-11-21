@@ -33,7 +33,7 @@ export function CursorGlow() {
         y: sy,
         translateX: "-50%",
         translateY: "-50%",
-        background: "radial-gradient(circle, rgba(59,130,246,0.10) 0%, rgba(59,130,246,0.04) 35%, rgba(59,130,246,0) 70%)",
+        background: "radial-gradient(circle, rgba(37,99,235,0.10) 0%, rgba(37,99,235,0.04) 35%, rgba(59,130,246,0) 70%)",
       }}
     />
   );
