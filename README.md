@@ -6,8 +6,8 @@ Robotics and UAV autonomy: ROS 2, LiDAR SLAM (Cartographer), Gazebo, Python.
 
 ## What is on the site
 
-- **Theme:** dark observatory (navy, pale gold), starfield with scroll parallax, academic robotics layout.
-- **Live SLAM illustration:** a canvas animation of a drone mapping a maze with 2D LiDAR (occupancy grid revealed from ray hits).
+- **Theme:** black, white and electric blue; starfield with scroll parallax; academic robotics layout.
+- **3D hero (Three.js / WebGL):** a quadrotor flies through a 3D maze, its 360° LiDAR scan builds a point cloud map; drag to orbit, scroll to tilt to a top-down view.
 - **Experience and projects:** real-drone LiDAR SLAM, the open-source Drone SLAM Simulator, UAV flight-log analysis, ArUco precision landing.
 - **Research finding:** a scroll-driven section on the loop-closure experiment (0.10 m vs 0.42 m mean error, 3 runs each).
 - **Documentation:** internship report (56 pp), simulator manual (24 pp), slides, hardware guide, certificate.
@@ -16,7 +16,7 @@ Robotics and UAV autonomy: ROS 2, LiDAR SLAM (Cartographer), Gazebo, Python.
 
 ## Stack
 
-Next.js 14 (static export) · TypeScript · Tailwind CSS · Framer Motion · deployed to GitHub Pages by `.github/workflows/deploy.yml`.
+Next.js 14 (static export) · TypeScript · Three.js · Tailwind CSS · Framer Motion · deployed to GitHub Pages by `.github/workflows/deploy.yml`.
 
 ## Run locally
 
