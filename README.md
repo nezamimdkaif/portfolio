@@ -1,107 +1,28 @@
-# Md Kaif Nezami - Portfolio
+# Portfolio: Md Kaif Nezami
 
-A modern, professional portfolio website for Md Kaif Nezami, an Embedded Systems & Robotics Engineer specializing in UAV systems and autonomous drone technology.
+Personal site: **https://nezamimdkaif.github.io/portfolio/**
 
-## Tech Stack
+Robotics and UAV autonomy: ROS 2, LiDAR SLAM (Cartographer), Gazebo, Python.
 
-- **Next.js 14** - React framework with App Router
-- **TypeScript** - Type-safe development
-- **Tailwind CSS** - Utility-first CSS framework
-- **Framer Motion** - Smooth animations and transitions
-- **Lucide React** - Modern icon library
+## What is on the site
 
-## Features
+- **Live SLAM illustration:** a canvas animation of a drone mapping a maze with 2D LiDAR (occupancy grid revealed from ray hits).
+- **Experience and projects:** real-drone LiDAR SLAM, the open-source Drone SLAM Simulator, UAV flight-log analysis, ArUco precision landing.
+- **Research finding:** a scroll-driven section on the loop-closure experiment (0.10 m vs 0.42 m mean error, 3 runs each).
+- **Documentation library:** internship report (56 pp), simulator manual (24 pp), slides, hardware guide, certificate.
+- **Live GitHub feed:** latest repositories fetched from the GitHub API on page load.
+- **Contact form:** Web3Forms (key stored as a GitHub Actions secret).
 
-- **Deep Aerospace Dark Mode Theme** - Professional dark blue/black backgrounds with glowing cyan accents
-- **Glassmorphism Design** - Frosted glass cards with subtle borders
-- **Responsive Layout** - Fully mobile-friendly design
-- **Smooth Scrolling** - Navigation links scroll smoothly to sections
-- **Interactive Elements** - Glowing hover effects and animated progress bars
-- **Component-Based Architecture** - Modular, maintainable code structure
+## Stack
 
-## Getting Started
+Next.js 14 (static export) · TypeScript · Tailwind CSS · Framer Motion · deployed to GitHub Pages by `.github/workflows/deploy.yml`.
 
-### Prerequisites
+## Run locally
 
-- Node.js 18+ and npm
-
-### Installation
-
-1. Install dependencies:
 ```bash
 npm install
+npm run dev          # http://localhost:3000/portfolio
+npm run build        # static site in out/
 ```
 
-2. Run the development server:
-```bash
-npm run dev
-```
-
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-### Build for Production
-
-```bash
-npm run build
-npm start
-```
-
-## Project Structure
-
-```
-portfolio/
-├── src/
-│   ├── app/
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   └── components/
-│       ├── Navigation.tsx
-│       ├── Hero.tsx
-│       ├── About.tsx
-│       ├── Skills.tsx
-│       ├── Projects.tsx
-│       ├── Achievements.tsx
-│       ├── Contact.tsx
-│       └── Footer.tsx
-├── public/
-├── tailwind.config.ts
-├── tsconfig.json
-└── package.json
-```
-
-## Sections
-
-1. **Hero** - Introduction with name, title, and call-to-action buttons
-2. **About** - Background, education, and key achievements
-3. **Skills** - Visual skill categories with progress bars
-4. **Projects** - Featured projects with glassmorphism cards
-5. **Achievements** - Certifications and accomplishments
-6. **Contact** - Contact information and form
-
-## Customization
-
-### Colors
-
-Edit `tailwind.config.ts` to customize the color palette:
-
-```typescript
-colors: {
-  background: {
-    dark: "#0a1428",
-    lighter: "#1a1f3a",
-  },
-  accent: {
-    cyan: "#00d4ff",
-    glow: "rgba(0, 212, 255, 0.5)",
-  },
-}
-```
-
-### Fonts
-
-The project uses Inter and Space Grotesk fonts. To change fonts, update `src/app/layout.tsx` and `tailwind.config.ts`.
-
-## License
-
-© 2024 Md Kaif Nezami. All rights reserved.
+All text content is in `src/lib/data.ts`.

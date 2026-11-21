@@ -1,37 +1,33 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        background: {
-          dark: "#0a0a0a",
-          lighter: "#1a1a1a",
+        ink: {
+          950: "#0b0c0e", // page
+          900: "#111316", // panels
+          800: "#181b1f", // raised
+          700: "#24282e", // hairlines
+          600: "#353a42",
         },
-        accent: {
-          coral: "#fb3a5d",
-          cyan: "#fb3a5d", // mapped to coral to keep subpages integrated
-          glow: "rgba(251, 58, 93, 0.4)",
+        paper: {
+          DEFAULT: "#ece8e1", // main text, warm off-white
+          dim: "#a8a39a", // secondary text
+          mute: "#77726a", // captions
         },
-        card: {
-          bg: "#1c1c1c",
-        }
+        signal: {
+          DEFAULT: "#ff6b35", // aviation orange, used sparingly
+        },
+        mint: "#7fd1b9", // data highlight (map hits, "OK")
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-space-grotesk)", "system-ui", "sans-serif"],
+        sans: ["var(--font-plex-sans)", "system-ui", "sans-serif"],
+        mono: ["var(--font-plex-mono)", "ui-monospace", "monospace"],
       },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "glass": "linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)",
-      },
-      backdropBlur: {
-        xs: "2px",
+      maxWidth: {
+        page: "72rem",
       },
     },
   },

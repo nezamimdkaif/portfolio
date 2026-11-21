@@ -1,28 +1,42 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import GlobalBackground from "@/components/GlobalBackground";
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-plex-sans",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Md Kaif Nezami - Embedded Systems & Robotics Engineer",
-  description: "Portfolio of Md Kaif Nezami, Embedded Systems & Robotics Engineer specializing in UAV systems and autonomous drone technology.",
+  title: "Md Kaif Nezami | Robotics and UAV Autonomy",
+  description:
+    "Md Kaif Nezami builds autonomy software for drones and mobile robots that fly without GPS: ROS 2, LiDAR SLAM with Cartographer, Gazebo simulation and Python. B.Tech ECE, BIT Sindri.",
+  authors: [{ name: "Md Kaif Nezami" }],
+  keywords: ["Md Kaif Nezami", "ROS 2", "SLAM", "Cartographer", "UAV", "drone", "robotics", "Python", "Gazebo", "PX4", "ArduPilot"],
+  openGraph: {
+    title: "Md Kaif Nezami | Robotics and UAV Autonomy",
+    description: "Autonomy software for robots that fly without GPS: ROS 2, LiDAR SLAM, Python.",
+    type: "website",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#0b0c0e",
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-sans antialiased">
-        <GlobalBackground />
-        {children}
-      </body>
+    <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }

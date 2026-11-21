@@ -2,76 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --font-inter: 'Inter', system-ui, sans-serif;
-    --font-space-grotesk: 'Space Grotesk', system-ui, sans-serif;
-  }
+:root {
+  color-scheme: dark;
+}
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: #0b0c0e;
+  color: #ece8e1;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #ff6b35;
+  color: #0b0c0e;
+}
+
+/* thin engineering-drawing grid used behind some panels */
+.blueprint {
+  background-image:
+    linear-gradient(to right, rgba(236, 232, 225, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(236, 232, 225, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@layer components {
+  .label {
+    @apply font-mono text-[11px] uppercase tracking-[0.18em] text-paper-mute;
+  }
+  .chip {
+    @apply inline-flex items-center rounded border border-ink-700 bg-ink-900 px-2 py-0.5 font-mono text-[11px] text-paper-dim;
+  }
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-md border border-ink-600 px-4 py-2 text-sm font-medium text-paper transition-colors hover:border-paper-dim hover:bg-ink-800;
+  }
+  .btn-primary {
+    @apply border-signal bg-signal text-ink-950 hover:border-[#ff8352] hover:bg-[#ff8352];
+  }
+  .panel {
+    @apply rounded-xl border border-ink-700 bg-ink-900/80;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #ff6b35;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
-
-  body {
-    @apply bg-background-dark text-white font-sans;
-    background-color: #0a0a0a;
-  }
-
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #0a0a0a;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #1c1c1c;
-    border: 2px solid #0a0a0a;
-    border-radius: 4px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #fb3a5d;
-  }
-}
-
-@layer utilities {
-  .glass-card {
-    @apply bg-card-bg/95 border border-white/5 rounded-2xl shadow-xl backdrop-blur-md;
-  }
-
-  .glow-hover {
-    @apply transition-all duration-300 hover:shadow-[0_0_30px_rgba(251,58,93,0.15)] hover:border-accent-coral/40;
-  }
-
-  .text-glow {
-    text-shadow: 0 0 20px rgba(251, 58, 93, 0.4);
-  }
-}
-
-/* Custom typewriter cursor animation */
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-.typewriter-cursor {
-  border-right: 2px solid #fb3a5d;
-  animation: blink 0.75s step-end infinite;
-}
-
-/* Timeline vertical line */
-.timeline-line::before {
-  content: '';
-  position: absolute;
-  left: 8px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, #fb3a5d 0%, rgba(251, 58, 93, 0.1) 100%);
-}
-
-@media (min-width: 768px) {
-  .timeline-line::before {
-    left: 50%;
-    transform: translateX(-50%);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
