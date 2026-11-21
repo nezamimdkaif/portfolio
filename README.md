@@ -7,8 +7,8 @@ Robotics and UAV autonomy: ROS 2, LiDAR SLAM (Cartographer), Gazebo, Python.
 ## What is on the site
 
 - **Theme:** black, white and electric blue; academic robotics layout.
-- **3D space background (Three.js):** thousands of twinkling stars, spiral galaxies and nebulae; scrolling flies the camera forward through space, mouse adds parallax, text stays readable.
-- **3D hero (Three.js / WebGL):** NASA's Ingenuity Mars Helicopter (3D model: NASA/JPL-Caltech) with counter-rotating rotors; scrolling takes it apart into an exploded view; drag to rotate.
+- **3D space background (Three.js):** thousands of twinkling stars, ESO Milky Way panorama and real Hubble galaxy photos; scrolling flies the camera forward through space, mouse adds parallax, text stays readable.
+- **3D Earth hero (Three.js / WebGL):** day/night shader with city lights, cloud layer and atmosphere glow; turns towards the mouse.
 - **Experience and projects:** real-drone LiDAR SLAM, the open-source Drone SLAM Simulator, UAV flight-log analysis, ArUco precision landing.
 - **Research finding:** a scroll-driven section on the loop-closure experiment (0.10 m vs 0.42 m mean error, 3 runs each).
 - **Documentation:** internship report (56 pp), simulator manual (24 pp), slides, hardware guide, certificate.
@@ -28,3 +28,7 @@ npm run build        # static site in out/
 ```
 
 All text content is in `src/lib/data.ts`.
+
+## Image credits
+
+Earth textures: Solar System Scope (CC BY 4.0). Milky Way panorama: ESO/S. Brunier (CC BY 4.0). Galaxies: NASA, ESA and the Hubble Heritage Team (M51, M104, NGC 1300 public domain; M101 CC BY 4.0).

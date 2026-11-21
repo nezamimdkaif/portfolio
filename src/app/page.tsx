@@ -22,8 +22,11 @@ export default function Home() {
         <Contact />
       </main>
       <footer className="border-t border-ink-700/60">
-        <div className="mx-auto max-w-page px-4 py-8 font-mono text-[11px] text-paper-mute md:px-6">
-          © 2026 {profile.name}
+        <div className="mx-auto flex max-w-page flex-col gap-2 px-4 py-8 font-mono text-[10px] leading-relaxed text-paper-mute md:flex-row md:justify-between md:px-6">
+          <span>© 2026 {profile.name}</span>
+          <span>
+            Imagery: Earth textures Solar System Scope (CC BY 4.0) · Milky Way ESO/S. Brunier (CC BY 4.0) · Galaxies NASA, ESA, Hubble Heritage (M101 CC BY 4.0)
+          </span>
         </div>
       </footer>
     </>

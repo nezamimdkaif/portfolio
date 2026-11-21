@@ -2,11 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { getAssetPath } from "@/utils";
 
 /*
  * Full-page WebGL space behind the content.
  * - Thousands of stars in depth that twinkle; the field wraps, so it never ends.
- * - Spiral galaxies and faint nebulae placed along the flight path.
+ * - Real imagery: ESO Milky Way panorama as the far sky, Hubble galaxy photos along the flight path.
  * - Scrolling flies the camera forward; fast scrolling stretches the stars a little.
  * - The mouse adds a small parallax. Everything stays dim so text stays readable.
  */
@@ -78,45 +79,6 @@ function rng(seed: number) {
   };
 }
 
-function makeGalaxy(rand: () => number, opts: { arms: number; count: number; radius: number; core: THREE.Color; edge: THREE.Color }) {
-  const { arms, count, radius, core, edge } = opts;
-  const pos = new Float32Array(count * 3);
-  const col = new Float32Array(count * 3);
-  const tmp = new THREE.Color();
-  for (let i = 0; i < count; i++) {
-    // 15% bulge around the core, the rest along logarithmic spiral arms
-    const inBulge = rand() < 0.15;
-    const r = inBulge ? Math.pow(rand(), 2) * radius * 0.18 : (0.08 + Math.pow(rand(), 0.9) * 0.92) * radius;
-    const arm = Math.floor(rand() * arms) / arms;
-    const angle = arm * Math.PI * 2 + Math.log(1 + r) * 2.4;
-    // gaussian-ish scatter that shrinks towards the rim, so the arms stay crisp
-    const g = () => (rand() + rand() + rand() - 1.5) / 1.5;
-    const spread = inBulge ? radius * 0.1 : radius * (0.05 + 0.06 * (1 - r / radius));
-    pos[i * 3] = Math.cos(angle) * r + g() * spread;
-    pos[i * 3 + 1] = g() * (inBulge ? radius * 0.05 : radius * 0.012);
-    pos[i * 3 + 2] = Math.sin(angle) * r + g() * spread;
-    const t = Math.min(1, r / (radius * 0.55));
-    tmp.copy(core).lerp(edge, t);
-    if (!inBulge && rand() < 0.06) tmp.set("#ffd2e6"); // a few pink star-forming knots
-    col[i * 3] = tmp.r;
-    col[i * 3 + 1] = tmp.g;
-    col[i * 3 + 2] = tmp.b;
-  }
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  const mat = new THREE.PointsMaterial({
-    size: 0.07,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.5,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    sizeAttenuation: true,
-  });
-  return new THREE.Points(geo, mat);
-}
-
 export default function SpaceBackground() {
   const mount = useRef<HTMLDivElement>(null);
 
@@ -178,43 +140,56 @@ export default function SpaceBackground() {
     stars.frustumCulled = false;
     scene.add(stars);
 
-    // ---------- galaxies along the path ----------
-    const galaxies: THREE.Points[] = [];
+    // ---------- Milky Way panorama (ESO/S. Brunier, CC BY 4.0) as a far sky ----------
+    const loader = new THREE.TextureLoader();
+    const skyTex = loader.load(getAssetPath("/space/milkyway.jpg"));
+    skyTex.colorSpace = THREE.SRGBColorSpace;
+    const sky = new THREE.Mesh(
+      new THREE.SphereGeometry(900, 64, 32),
+      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, transparent: true, opacity: 0.55, depthWrite: false, fog: false })
+    );
+    sky.rotation.set(0.5, 2.4, -0.35); // band crosses the screen diagonally
+    scene.add(sky);
+
+    // ---------- real galaxy photos (Hubble: NASA/ESA) along the flight path ----------
+    const galaxies: THREE.Mesh[] = [];
     const gDefs = [
-      { x: 34, y: 12, z: -70, r: 16, arms: 2, tilt: 1.25, core: "#fff1d6", edge: "#3b82f6" },
-      { x: -40, y: -14, z: -150, r: 22, arms: 3, tilt: 1.0, core: "#ffffff", edge: "#7c6cf2" },
-      { x: 28, y: -18, z: -230, r: 18, arms: 2, tilt: 1.3, core: "#ffe6c4", edge: "#60a5fa" },
-      { x: -30, y: 16, z: -305, r: 26, arms: 4, tilt: 0.9, core: "#ffffff", edge: "#3b82f6" },
-      { x: 10, y: 4, z: -420, r: 34, arms: 2, tilt: 1.0, core: "#fff6e5", edge: "#8b5cf6" },
+      { src: "/space/m101.jpg", x: 30, y: 10, z: -60, w: 44, rot: 0.3, op: 0.95 },
+      { src: "/space/m104.jpg", x: -36, y: -12, z: -135, w: 56, rot: -0.2, op: 0.9 },
+      { src: "/space/m51.jpg", x: 34, y: -14, z: -210, w: 60, rot: 0.6, op: 0.95 },
+      { src: "/space/ngc1300.jpg", x: -32, y: 14, z: -290, w: 72, rot: -0.4, op: 0.9 },
+      { src: "/space/m101.jpg", x: 8, y: -4, z: -400, w: 90, rot: 1.2, op: 0.85 },
     ];
     for (const g of gDefs) {
-      const gal = makeGalaxy(rand, { arms: g.arms, count: 14000, radius: g.r, core: new THREE.Color(g.core), edge: new THREE.Color(g.edge) });
-      gal.position.set(g.x, g.y, g.z);
-      gal.rotation.set(g.tilt, rand() * Math.PI, (rand() - 0.5) * 0.6);
-      galaxies.push(gal);
-      scene.add(gal);
-      // bright core glow
-      const glow = new THREE.Sprite(
-        new THREE.SpriteMaterial({ map: softSprite("rgba(255,236,205,0.28)", "rgba(255,236,205,0)"), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })
+      const t = loader.load(getAssetPath(g.src), (tx) => {
+        const img = tx.image as HTMLImageElement;
+        mesh.scale.set(g.w, (g.w * img.height) / img.width, 1);
+      });
+      t.colorSpace = THREE.SRGBColorSpace;
+      const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(1, 1),
+        new THREE.MeshBasicMaterial({ map: t, transparent: true, opacity: g.op, depthWrite: false, blending: THREE.AdditiveBlending })
       );
-      glow.scale.setScalar(g.r * 0.45);
-      glow.position.copy(gal.position);
-      scene.add(glow);
+      mesh.position.set(g.x, g.y, g.z);
+      mesh.rotation.z = g.rot;
+      mesh.scale.set(g.w, g.w * 0.7, 1);
+      galaxies.push(mesh);
+      scene.add(mesh);
     }
 
-    // ---------- nebulae ----------
+    // ---------- faint nebula haze ----------
     const nebTex = [
-      softSprite("rgba(59,130,246,0.22)", "rgba(59,130,246,0)"),
-      softSprite("rgba(124,108,242,0.18)", "rgba(124,108,242,0)"),
-      softSprite("rgba(20,184,166,0.12)", "rgba(20,184,166,0)"),
+      softSprite("rgba(59,130,246,0.16)", "rgba(59,130,246,0)"),
+      softSprite("rgba(124,108,242,0.13)", "rgba(124,108,242,0)"),
+      softSprite("rgba(236,72,153,0.07)", "rgba(236,72,153,0)"),
     ];
-    for (let i = 0; i < 14; i++) {
+    for (let i = 0; i < 12; i++) {
       const sp = new THREE.Sprite(
         new THREE.SpriteMaterial({ map: nebTex[i % 3], transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.8 })
       );
       const side = i % 2 ? 1 : -1;
-      sp.position.set(side * (25 + rand() * 45), (rand() - 0.5) * 50, -20 - i * 30 - rand() * 15);
-      sp.scale.setScalar(40 + rand() * 50);
+      sp.position.set(side * (30 + rand() * 45), (rand() - 0.5) * 50, -30 - i * 34 - rand() * 15);
+      sp.scale.setScalar(50 + rand() * 60);
       scene.add(sp);
     }
 
@@ -270,14 +245,16 @@ export default function SpaceBackground() {
       speed += (Math.min(1.5, v / 60) - speed) * Math.min(1, dt * 4);
 
       camera.position.z = camZ;
-      camera.position.x += (mouse.x * 2.2 - camera.position.x) * Math.min(1, dt * 2);
-      camera.position.y += (-mouse.y * 1.4 - camera.position.y) * Math.min(1, dt * 2);
+      camera.position.x += (mouse.x * 4 - camera.position.x) * Math.min(1, dt * 2);
+      camera.position.y += (-mouse.y * 2.6 - camera.position.y) * Math.min(1, dt * 2);
+      sky.position.copy(camera.position);
+      sky.rotation.y = 2.4 + mouse.x * 0.04 + (10 - camZ) * 0.0006;
       camera.lookAt(camera.position.x * 0.5, camera.position.y * 0.5, camZ - 50);
 
       sMat.uniforms.uCamZ.value = camZ;
       sMat.uniforms.uTime.value = reduce ? 0 : now / 1000;
       sMat.uniforms.uSpeed.value = speed;
-      if (!reduce) for (let i = 0; i < galaxies.length; i++) galaxies[i].rotation.y += dt * (0.02 + i * 0.004);
+      if (!reduce) for (let i = 0; i < galaxies.length; i++) galaxies[i].rotation.z += dt * (0.006 + i * 0.002);
 
       renderer.render(scene, camera);
     };

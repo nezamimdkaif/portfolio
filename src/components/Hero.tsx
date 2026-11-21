@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { news, profile } from "@/lib/data";
 import { getAssetPath } from "@/utils";
 
-const ModelHero = dynamic(() => import("./ModelHero"), { ssr: false });
+const EarthHero = dynamic(() => import("./EarthHero"), { ssr: false });
 
 const links = [
   { label: "Resume", href: profile.resume },
@@ -17,11 +17,10 @@ const links = [
 export default function Hero() {
   return (
     <section id="top" className="relative">
-      {/* 3D model: full-bleed behind the text on large screens, below it on phones */}
-      <div data-explode className="relative lg:h-[190vh]">
-       <div className="relative lg:sticky lg:top-0 lg:h-[100svh] lg:min-h-[640px]">
-        <ModelHero className="absolute inset-0 hidden lg:block" />
-        <div aria-hidden className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-ink-950/80 via-ink-950/40 to-transparent lg:block" />
+      {/* Earth: full-bleed behind the text on large screens, below it on phones */}
+      <div className="relative">
+       <div className="relative lg:h-[100svh] lg:min-h-[640px]">
+        <EarthHero className="absolute inset-0 hidden lg:block" />
 
         <div className="pointer-events-none relative mx-auto flex h-full max-w-page items-center px-4 pt-28 md:px-6 lg:pt-0">
           <motion.div
@@ -50,16 +49,14 @@ export default function Hero() {
                 </a>
               ))}
             </p>
-            <p className="mt-8 hidden font-mono text-[11px] text-paper-mute lg:block">3D model: NASA/JPL-Caltech, Ingenuity Mars Helicopter · drag to rotate · scroll to take it apart</p>
           </motion.div>
         </div>
        </div>
       </div>
 
-      <div data-explode className="relative mt-10 h-[55vh] lg:hidden">
-        <ModelHero className="absolute inset-0" />
+      <div className="relative mt-6 h-[52vh] lg:hidden">
+        <EarthHero className="absolute inset-0" />
       </div>
-      <p className="mx-auto max-w-page px-4 font-mono text-[10px] text-paper-mute lg:hidden">3D model: NASA/JPL-Caltech, Ingenuity Mars Helicopter</p>
 
       <div className="mx-auto mt-10 max-w-page px-4 md:px-6 lg:mt-0">
         <h2 className="label mb-4">News</h2>
