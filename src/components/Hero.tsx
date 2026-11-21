@@ -8,6 +8,7 @@ import { getAssetPath } from "@/utils";
 import { Magnetic, RevealText } from "./effects";
 
 const RoverHero = dynamic(() => import("./RoverHero"), { ssr: false });
+const DroneHero = dynamic(() => import("./DroneHero"), { ssr: false });
 
 const links = [
   { label: "Resume", href: profile.resume },
@@ -17,7 +18,7 @@ const links = [
 ];
 
 export default function Hero() {
-  // render a single WebGL rover: full-bleed on desktop, a box under the text on phones
+  // desktop: Perseverance rover full-bleed behind the text; phones: their own layout with the drone
   const [wide, setWide] = useState<boolean | null>(null);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -29,8 +30,8 @@ export default function Hero() {
 
   return (
     <section id="top" className="relative">
-      {/* Rover: full-bleed behind the text on large screens, below it on phones */}
-      <div className="relative">
+      {/* ---------- desktop ---------- */}
+      <div className="relative hidden lg:block">
        <div className="relative lg:h-[100svh] lg:min-h-[640px]">
         {wide === true && <RoverHero className="absolute inset-0" />}
 
@@ -73,9 +74,49 @@ export default function Hero() {
        </div>
       </div>
 
-      <div className="relative mt-6 h-[52vh] lg:hidden">{wide === false && <RoverHero className="absolute inset-0" />}</div>
+      {/* ---------- phones ---------- */}
+      <div className="lg:hidden">
+        <div className="relative h-[46svh] min-h-[300px] pt-14">
+          {wide === false && <DroneHero className="absolute inset-0" />}
+          <p className="pointer-events-none absolute bottom-2 left-0 right-0 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-paper-mute">
+            Tap to steer
+          </p>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="px-5 pt-4"
+        >
+          <p className="label mb-3 text-signal">{profile.role}</p>
+          <h1 className="text-[2.6rem] font-semibold leading-[1.05] tracking-tight text-paper">
+            <RevealText text={profile.name} />
+          </h1>
+          <p className="mt-4 text-[15px] leading-relaxed text-paper-dim">
+            Third-year Electronics and Communication Engineering undergraduate at <span className="text-paper">BIT Sindri</span> (B.Tech, 2024–2028)
+            and Project Intern at the <span className="text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>.
+          </p>
+          <p className="mt-3 text-[16px] leading-relaxed text-paper-dim">
+            I develop autonomy software for drones that must navigate without GPS, with a focus on <span className="text-paper">LiDAR SLAM</span>,{" "}
+            <span className="text-paper">sensor integration</span> and <span className="text-paper">simulation-to-hardware testing</span> in Python and ROS 2.
+          </p>
+          <div className="mt-6 grid grid-cols-2 gap-2.5">
+            {links.map((l, i) => (
+              <a
+                key={l.label}
+                href={getAssetPath(l.href)}
+                target={l.href.startsWith("mailto") ? undefined : "_blank"}
+                rel="noreferrer"
+                className={`${i === 0 ? "btn btn-primary" : "btn"} justify-center py-3 active:scale-[0.97]`}
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      </div>
 
-      <div className="mx-auto mt-10 max-w-page px-4 md:px-6 lg:mt-0">
+      <div className="mx-auto mt-12 max-w-page px-5 md:px-6 lg:mt-0">
         <h2 className="label mb-4">News</h2>
         <ul className="divide-y divide-ink-700 border-y border-ink-700">
           {news.map((n, i) => (

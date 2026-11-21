@@ -8,7 +8,8 @@ Robotics and UAV autonomy: ROS 2, LiDAR SLAM (Cartographer), Gazebo, Python.
 
 - **Theme:** black, white and electric blue; academic robotics layout.
 - **3D space background (Three.js):** thousands of twinkling stars, ESO Milky Way panorama and real Hubble galaxy photos; scrolling flies the camera forward through space, mouse adds parallax, text stays readable.
-- **3D rover hero (Three.js / WebGL):** NASA's Perseverance Mars rover (NASA/JPL-Caltech, compressed 11.7 MB -> 2.3 MB with meshopt + WebP) on Martian ground; its camera mast follows the mouse, scrolling orbits the camera.
+- **Phones:** separate layout with a procedural 3D quadcopter (rolls, flips, light trails, downwash rings, tap to steer) and a light CSS sky instead of WebGL space, so phones run a single WebGL scene.
+- **3D rover hero on desktop (Three.js / WebGL):** NASA's Perseverance Mars rover (NASA/JPL-Caltech, compressed 11.7 MB -> 2.3 MB with meshopt + WebP) on Martian ground; its camera mast follows the mouse, scrolling orbits the camera.
 - **Experience and projects:** real-drone LiDAR SLAM, the open-source Drone SLAM Simulator, UAV flight-log analysis, ArUco precision landing.
 - **Research finding:** a scroll-driven section on the loop-closure experiment (0.10 m vs 0.42 m mean error, 3 runs each).
 - **Documentation:** internship report (56 pp), simulator manual (24 pp), slides, hardware guide, certificate.

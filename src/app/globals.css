@@ -75,3 +75,35 @@ textarea:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- phone sky: CSS stars (no WebGL) ---------- */
+.stars-sm {
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 33% 72%, #dbe6ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 34%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 76% 88%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 90% 12%, #cfe0ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 52%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 66% 60%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 46% 92%, #e6eeff 50%, transparent 51%);
+  background-size: 220px 220px;
+  opacity: 0.7;
+}
+.stars-lg {
+  background-image:
+    radial-gradient(1.6px 1.6px at 20% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 70% 20%, #bcd4ff 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 45% 75%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 85% 65%, #ffe9c9 50%, transparent 51%);
+  background-size: 360px 360px;
+  opacity: 0.8;
+}
+@keyframes twinkle {
+  from { opacity: 0.35; }
+  to { opacity: 0.9; }
+}
+@keyframes skydrift {
+  from { transform: rotate(-28deg) scale(1.25) translate3d(-3%, 0, 0); }
+  to { transform: rotate(-28deg) scale(1.25) translate3d(3%, 2%, 0); }
+}
