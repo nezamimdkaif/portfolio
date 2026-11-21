@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { news, profile } from "@/lib/data";
 import { getAssetPath } from "@/utils";
 
@@ -15,12 +16,22 @@ const links = [
 ];
 
 export default function Hero() {
+  // render a single WebGL Earth: full-bleed on desktop, a box under the text on phones
+  const [wide, setWide] = useState<boolean | null>(null);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
   return (
     <section id="top" className="relative">
       {/* Earth: full-bleed behind the text on large screens, below it on phones */}
       <div className="relative">
        <div className="relative lg:h-[100svh] lg:min-h-[640px]">
-        <EarthHero className="absolute inset-0 hidden lg:block" />
+        {wide === true && <EarthHero className="absolute inset-0" />}
 
         <div className="pointer-events-none relative mx-auto flex h-full max-w-page items-center px-4 pt-28 md:px-6 lg:pt-0">
           <motion.div
@@ -54,9 +65,7 @@ export default function Hero() {
        </div>
       </div>
 
-      <div className="relative mt-6 h-[52vh] lg:hidden">
-        <EarthHero className="absolute inset-0" />
-      </div>
+      <div className="relative mt-6 h-[52vh] lg:hidden">{wide === false && <EarthHero className="absolute inset-0" />}</div>
 
       <div className="mx-auto mt-10 max-w-page px-4 md:px-6 lg:mt-0">
         <h2 className="label mb-4">News</h2>

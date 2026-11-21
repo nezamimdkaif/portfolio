@@ -86,7 +86,7 @@ export default function EarthHero({ className = "" }: { className?: string }) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.domElement.style.display = "block";
@@ -100,12 +100,12 @@ export default function EarthHero({ className = "" }: { className?: string }) {
     let loaded = 0;
     const onLoad = () => {
       loaded++;
-      if (loaded === 3) setReady(true);
+      if (loaded === 2) setReady(true); // show as soon as day + night maps are in
     };
     const tex = (p: string, srgb = true) => {
       const t = loader.load(getAssetPath(p), onLoad);
       if (srgb) t.colorSpace = THREE.SRGBColorSpace;
-      t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      t.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
       return t;
     };
     const sun = new THREE.Vector3(-1.0, 0.35, 0.55).normalize();
@@ -119,21 +119,30 @@ export default function EarthHero({ className = "" }: { className?: string }) {
       fragmentShader: earthFrag,
       uniforms: { uDay: { value: tex("/space/earth_day.jpg") }, uNight: { value: tex("/space/earth_night.jpg") }, uSun: { value: sun } },
     });
-    const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 128, 96), earthMat);
+    const earth = new THREE.Mesh(new THREE.SphereGeometry(1, 96, 64), earthMat);
     tilt.add(earth);
 
     const cloudMat = new THREE.ShaderMaterial({
       vertexShader: earthVert,
       fragmentShader: cloudFrag,
-      uniforms: { uClouds: { value: tex("/space/earth_clouds.jpg", false) }, uSun: { value: sun } },
+      uniforms: { uClouds: { value: new THREE.Texture() }, uSun: { value: sun } },
       transparent: true,
       depthWrite: false,
     });
-    const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.012, 128, 96), cloudMat);
+    const clouds = new THREE.Mesh(new THREE.SphereGeometry(1.012, 96, 64), cloudMat);
+    clouds.visible = false;
     tilt.add(clouds);
+    // clouds are the largest texture: fetch them after the globe is already visible
+    const cloudTimer = window.setTimeout(() => {
+      loader.load(getAssetPath("/space/earth_clouds.jpg"), (t) => {
+        t.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
+        cloudMat.uniforms.uClouds.value = t;
+        clouds.visible = true;
+      });
+    }, 900);
 
     const atmo = new THREE.Mesh(
-      new THREE.SphereGeometry(1.18, 96, 64),
+      new THREE.SphereGeometry(1.18, 64, 48),
       new THREE.ShaderMaterial({
         vertexShader: atmoVert,
         fragmentShader: atmoFrag,
@@ -204,6 +213,7 @@ export default function EarthHero({ className = "" }: { className?: string }) {
     raf = requestAnimationFrame(loop);
 
     return () => {
+      window.clearTimeout(cloudTimer);
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();

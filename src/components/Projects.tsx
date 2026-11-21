@@ -7,18 +7,42 @@ import { Reveal, SectionHead } from "./ui";
 
 function MediaView({ m }: { m: Media }) {
   const vref = useRef<HTMLVideoElement>(null);
+  const [near, setNear] = useState(false);
   useEffect(() => {
     const v = vref.current;
     if (!v) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.3 });
+    // load the video only when it is about to scroll into view, play only while visible
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setNear(true);
+          v.play().catch(() => {});
+        } else v.pause();
+      },
+      { rootMargin: "300px 0px", threshold: 0 }
+    );
     io.observe(v);
     return () => io.disconnect();
   }, []);
+  useEffect(() => {
+    if (near) vref.current?.play().catch(() => {});
+  }, [near]);
   if (m.kind === "video") {
-    return <video ref={vref} src={getAssetPath(m.src)} muted loop playsInline preload="metadata" aria-label={m.alt} className="h-full w-full object-cover" />;
+    return (
+      <video
+        ref={vref}
+        src={near ? getAssetPath(m.src) : undefined}
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-label={m.alt}
+        className="h-full w-full object-cover"
+      />
+    );
   }
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={getAssetPath(m.src)} alt={m.alt} loading="lazy" className="h-full w-full object-cover" />;
+  return <img src={getAssetPath(m.src)} alt={m.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />;
 }
 
 function Thumb({ media }: { media: Media[] }) {

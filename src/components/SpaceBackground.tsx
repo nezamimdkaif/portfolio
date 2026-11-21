@@ -14,7 +14,10 @@ import { getAssetPath } from "@/utils";
 
 const DEPTH = 420; // length of the star tube (wraps)
 const TRAVEL = 380; // how far the camera flies from top to bottom of the page
-const STARS = 7000;
+// weak or small devices get half the stars and a lower resolution
+const isLite = () =>
+  typeof navigator !== "undefined" &&
+  ((navigator.hardwareConcurrency || 8) <= 4 || window.matchMedia("(max-width: 768px)").matches);
 
 const starVert = /* glsl */ `
   uniform float uCamZ;
@@ -86,10 +89,12 @@ export default function SpaceBackground() {
     const el = mount.current;
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lite = isLite();
+    const STARS = lite ? 3500 : 7000;
     const rand = rng(20261121);
 
     const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: "high-performance" });
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const dpr = lite ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
     renderer.setPixelRatio(dpr);
     renderer.setClearColor(0x050507, 1);
     renderer.domElement.style.display = "block";
@@ -145,7 +150,7 @@ export default function SpaceBackground() {
     const skyTex = loader.load(getAssetPath("/space/milkyway.jpg"));
     skyTex.colorSpace = THREE.SRGBColorSpace;
     const sky = new THREE.Mesh(
-      new THREE.SphereGeometry(900, 64, 32),
+      new THREE.SphereGeometry(900, 48, 24),
       new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, transparent: true, opacity: 0.55, depthWrite: false, fog: false })
     );
     sky.rotation.set(0.5, 2.4, -0.35); // band crosses the screen diagonally
