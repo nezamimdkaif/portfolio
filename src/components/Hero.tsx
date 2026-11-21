@@ -21,8 +21,7 @@ export default function Hero() {
       <div data-explode className="relative lg:h-[190vh]">
        <div className="relative lg:sticky lg:top-0 lg:h-[100svh] lg:min-h-[640px]">
         <ModelHero className="absolute inset-0 hidden lg:block" />
-        <div aria-hidden className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-ink-950 via-ink-950/70 to-transparent lg:block" />
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-40 bg-gradient-to-t from-ink-950 to-transparent lg:block" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-ink-950/80 via-ink-950/40 to-transparent lg:block" />
 
         <div className="pointer-events-none relative mx-auto flex h-full max-w-page items-center px-4 pt-28 md:px-6 lg:pt-0">
           <motion.div

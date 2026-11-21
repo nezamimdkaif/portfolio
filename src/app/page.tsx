@@ -1,4 +1,4 @@
-import Starfield from "@/components/Starfield";
+import SpaceBackground from "@/components/SpaceBg";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
@@ -11,7 +11,7 @@ import { profile } from "@/lib/data";
 export default function Home() {
   return (
     <>
-      <Starfield />
+      <SpaceBackground />
       <Nav />
       <main>
         <Hero />
