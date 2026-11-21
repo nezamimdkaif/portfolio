@@ -7,7 +7,7 @@ Robotics and UAV autonomy: ROS 2, LiDAR SLAM (Cartographer), Gazebo, Python.
 ## What is on the site
 
 - **Theme:** black, white and electric blue; starfield with scroll parallax; academic robotics layout.
-- **3D hero (Three.js / WebGL):** a quadrotor flies through a 3D maze, its 360° LiDAR scan builds a point cloud map; drag to orbit, scroll to tilt to a top-down view.
+- **3D hero (Three.js / WebGL):** NASA's Ingenuity Mars Helicopter (3D model: NASA/JPL-Caltech) with counter-rotating rotors; scrolling takes it apart into an exploded view; drag to rotate.
 - **Experience and projects:** real-drone LiDAR SLAM, the open-source Drone SLAM Simulator, UAV flight-log analysis, ArUco precision landing.
 - **Research finding:** a scroll-driven section on the loop-closure experiment (0.10 m vs 0.42 m mean error, 3 runs each).
 - **Documentation:** internship report (56 pp), simulator manual (24 pp), slides, hardware guide, certificate.
