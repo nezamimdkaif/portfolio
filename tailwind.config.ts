@@ -14,8 +14,8 @@ const config: Config = {
         },
         paper: {
           DEFAULT: "#f5f5f5", // main text: white
-          dim: "#b4b4b4", // secondary text
-          mute: "#8a8a8a", // captions
+          dim: "#cfcfcf", // secondary text
+          mute: "#b3b3b3", // captions
         },
         signal: {
           DEFAULT: "#3b82f6", // electric blue accent

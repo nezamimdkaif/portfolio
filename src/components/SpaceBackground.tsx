@@ -151,7 +151,7 @@ export default function SpaceBackground() {
     skyTex.colorSpace = THREE.SRGBColorSpace;
     const sky = new THREE.Mesh(
       new THREE.SphereGeometry(900, 48, 24),
-      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, transparent: true, opacity: 0.55, depthWrite: false, fog: false })
+      new THREE.MeshBasicMaterial({ map: skyTex, side: THREE.BackSide, transparent: true, opacity: 0.28, depthWrite: false, fog: false })
     );
     sky.rotation.set(0.5, 2.4, -0.35); // band crosses the screen diagonally
     scene.add(sky);
@@ -159,11 +159,11 @@ export default function SpaceBackground() {
     // ---------- real galaxy photos (Hubble: NASA/ESA) along the flight path ----------
     const galaxies: THREE.Mesh[] = [];
     const gDefs = [
-      { src: "/space/m101.jpg", x: 30, y: 10, z: -60, w: 44, rot: 0.3, op: 0.95 },
-      { src: "/space/m104.jpg", x: -36, y: -12, z: -135, w: 56, rot: -0.2, op: 0.9 },
-      { src: "/space/m51.jpg", x: 34, y: -14, z: -210, w: 60, rot: 0.6, op: 0.95 },
-      { src: "/space/ngc1300.jpg", x: -32, y: 14, z: -290, w: 72, rot: -0.4, op: 0.9 },
-      { src: "/space/m101.jpg", x: 8, y: -4, z: -400, w: 90, rot: 1.2, op: 0.85 },
+      { src: "/space/m101.jpg", x: 30, y: 10, z: -60, w: 44, rot: 0.3, op: 0.55 },
+      { src: "/space/m104.jpg", x: -36, y: -12, z: -135, w: 56, rot: -0.2, op: 0.5 },
+      { src: "/space/m51.jpg", x: 34, y: -14, z: -210, w: 60, rot: 0.6, op: 0.55 },
+      { src: "/space/ngc1300.jpg", x: -32, y: 14, z: -290, w: 72, rot: -0.4, op: 0.5 },
+      { src: "/space/m101.jpg", x: 8, y: -4, z: -400, w: 90, rot: 1.2, op: 0.45 },
     ];
     for (const g of gDefs) {
       const t = loader.load(getAssetPath(g.src), (tx) => {
@@ -184,8 +184,8 @@ export default function SpaceBackground() {
 
     // ---------- faint nebula haze ----------
     const nebTex = [
-      softSprite("rgba(59,130,246,0.16)", "rgba(59,130,246,0)"),
-      softSprite("rgba(124,108,242,0.13)", "rgba(124,108,242,0)"),
+      softSprite("rgba(59,130,246,0.10)", "rgba(59,130,246,0)"),
+      softSprite("rgba(124,108,242,0.08)", "rgba(124,108,242,0)"),
       softSprite("rgba(236,72,153,0.07)", "rgba(236,72,153,0)"),
     ];
     for (let i = 0; i < 12; i++) {
@@ -309,7 +309,7 @@ export default function SpaceBackground() {
       <div
         aria-hidden
         className="pointer-events-none fixed inset-0 -z-10"
-        style={{ background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(5,5,7,0.55) 0%, rgba(5,5,7,0.25) 60%, rgba(5,5,7,0) 100%)" }}
+        style={{ background: "linear-gradient(90deg, rgba(5,5,7,0.35) 0%, rgba(5,5,7,0.72) 18%, rgba(5,5,7,0.72) 82%, rgba(5,5,7,0.35) 100%)" }}
       />
     </>
   );

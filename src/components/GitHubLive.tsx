@@ -48,7 +48,7 @@ export default function GitHubLive() {
           <Github size={16} />
           <span className="font-mono text-xs">github.com/{profile.githubUser}</span>
         </div>
-        <span className="flex items-center gap-2 font-mono text-[10px] text-paper-mute">
+        <span className="flex items-center gap-2 font-mono text-[11.5px] text-paper-mute">
           <span className="h-1.5 w-1.5 rounded-full bg-mint" /> live
         </span>
       </div>
@@ -60,14 +60,14 @@ export default function GitHubLive() {
               <p className="text-sm font-medium text-paper group-hover:text-signal">{r.name}</p>
               {r.description && <p className="mt-0.5 text-xs leading-relaxed text-paper-mute">{r.description}</p>}
             </div>
-            <div className="shrink-0 text-right font-mono text-[10px] text-paper-mute">
+            <div className="shrink-0 text-right font-mono text-[11.5px] text-paper-mute">
               <div>{r.language ?? ""}</div>
               <div>updated {ago(r.pushed_at)}</div>
             </div>
           </a>
         ))}
       </div>
-      <a href={profile.github} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 font-mono text-[11px] text-paper-mute hover:text-paper">
+      <a href={profile.github} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 font-mono text-[12.5px] text-paper-mute hover:text-paper">
         All repositories <ArrowUpRight size={12} />
       </a>
     </div>

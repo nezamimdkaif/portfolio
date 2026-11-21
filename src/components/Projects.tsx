@@ -76,9 +76,9 @@ function Row({ p }: { p: Project }) {
         <Thumb media={p.media} />
         <div>
           <h3 className="text-xl font-medium text-paper">{p.title}</h3>
-          <p className="mt-1 font-mono text-xs text-paper-mute">{p.kicker}</p>
+          <p className="mt-1 font-mono text-[13px] text-paper-mute">{p.kicker}</p>
           {p.links.length > 0 && (
-            <p className="mt-2 flex flex-wrap gap-x-3 text-sm">
+            <p className="mt-2 flex flex-wrap gap-x-3 text-[15px]">
               {p.links.map((l, i) => (
                 <span key={l.href}>
                   <a href={getAssetPath(l.href)} target="_blank" rel="noreferrer" className="text-signal hover:underline">
@@ -90,7 +90,7 @@ function Row({ p }: { p: Project }) {
             </p>
           )}
           <p className="mt-3 leading-relaxed text-paper-dim">{p.summary}</p>
-          <ul className="mt-3 space-y-1.5 text-sm text-paper-dim">
+          <ul className="mt-3 space-y-1.5 text-[15px] text-paper-dim">
             {p.points.map((pt) => (
               <li key={pt} className="flex gap-2.5">
                 <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-paper-mute" />
@@ -98,7 +98,7 @@ function Row({ p }: { p: Project }) {
               </li>
             ))}
           </ul>
-          <p className="mt-3 font-mono text-[11px] text-paper-mute">{p.tags.join(" · ")}</p>
+          <p className="mt-3 font-mono text-[12.5px] text-paper-mute">{p.tags.join(" · ")}</p>
         </div>
       </article>
     </Reveal>

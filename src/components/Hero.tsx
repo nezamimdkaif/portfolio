@@ -77,9 +77,9 @@ export default function Hero() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-sm"
+              className="grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-[15px]"
             >
-              <span className="font-mono text-xs leading-6 text-paper-mute">{n.date}</span>
+              <span className="font-mono text-[13px] leading-6 text-paper-mute">{n.date}</span>
               <span className="leading-6 text-paper-dim">
                 {n.href ? (
                   <a href={getAssetPath(n.href)} target="_blank" rel="noreferrer" className="hover:text-signal">

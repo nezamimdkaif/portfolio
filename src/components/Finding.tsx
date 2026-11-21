@@ -66,7 +66,7 @@ export default function Finding() {
                 { label: "Loop closure ON", v: loopClosure.avgOn, runs: loopClosure.runs.map((r) => r.on), color: "bg-signal", w: onWidth },
               ].map((b) => (
                 <div key={b.label}>
-                  <div className="mb-1 flex justify-between font-mono text-[11px] text-paper-mute">
+                  <div className="mb-1 flex justify-between font-mono text-[12.5px] text-paper-mute">
                     <span>{b.label}</span>
                     <span className="text-paper">{b.v.toFixed(2)} m mean</span>
                   </div>
@@ -83,7 +83,7 @@ export default function Finding() {
                   </div>
                 </div>
               ))}
-              <p className="font-mono text-[10px] text-paper-mute">Bars: mean of 3 runs. Ticks: each run. Scale 0 - 0.6 m.</p>
+              <p className="font-mono text-[11.5px] text-paper-mute">Bars: mean of 3 runs. Ticks: each run. Scale 0 - 0.6 m.</p>
             </motion.div>
           </div>
 
@@ -94,7 +94,7 @@ export default function Finding() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <motion.img style={{ opacity: onOpacity }} src={getAssetPath("/img/lc-on.png")} alt="SLAM map with loop closure on: doubled, rotated walls" className="absolute inset-6 h-[calc(100%-3rem)] w-[calc(100%-3rem)] object-contain [image-rendering:pixelated]" />
             </div>
-            <p className="mt-2 text-center font-mono text-[10px] text-paper-mute md:mt-3 md:text-[11px]">
+            <p className="mt-2 text-center font-mono text-[11.5px] text-paper-mute md:mt-3 md:text-[12.5px]">
               {step === 0 ? "Map with loop closure OFF: walls straight and square" : "Map with loop closure ON: doubled, rotated walls"}
             </p>
           </div>

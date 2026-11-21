@@ -13,7 +13,7 @@ export default function Docs() {
         {docs.map((d) => (
           <Reveal key={d.title}>
             <a href={getAssetPath(d.href)} target="_blank" rel="noreferrer" className="group grid gap-2 py-5 md:grid-cols-[11rem_1fr_auto] md:gap-10">
-              <p className="font-mono text-xs leading-6 text-paper-mute">
+              <p className="font-mono text-[13px] leading-6 text-paper-mute">
                 {d.date}
                 <br className="hidden md:block" />
                 <span className="md:hidden"> · </span>
@@ -21,8 +21,8 @@ export default function Docs() {
               </p>
               <div>
                 <h3 className="font-medium text-paper transition-colors group-hover:text-signal">{d.title}</h3>
-                <p className="mt-0.5 font-mono text-[11px] text-paper-mute">{d.meta}</p>
-                <p className="mt-2 text-sm leading-relaxed text-paper-dim">{d.inside.join(" · ")}</p>
+                <p className="mt-0.5 font-mono text-[12.5px] text-paper-mute">{d.meta}</p>
+                <p className="mt-2 text-[15px] leading-relaxed text-paper-dim">{d.inside.join(" · ")}</p>
               </div>
               <ArrowUpRight size={18} className="hidden text-paper-mute transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal md:block" />
             </a>
