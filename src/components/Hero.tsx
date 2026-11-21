@@ -46,7 +46,7 @@ export default function Hero() {
               <RevealText text={profile.name} />
             </h1>
             <p className="mt-6 leading-relaxed text-paper-dim">
-              Electronics and Communication Engineering undergraduate at <span className="text-paper">BIT Sindri</span> (B.Tech, 2024–2028) and
+              Third-year Electronics and Communication Engineering undergraduate at <span className="text-paper">BIT Sindri</span> (B.Tech, 2024–2028) and
               Project Intern at the <span className="text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>.
             </p>
             <p className="mt-3 text-lg leading-relaxed text-paper-dim">
