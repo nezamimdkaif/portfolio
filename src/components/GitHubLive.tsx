@@ -8,10 +8,10 @@ type Repo = { name: string; description: string | null; html_url: string; langua
 
 const FALLBACK: Repo[] = [
   {
-    name: "drone-slam-simulator",
-    description: "2D LiDAR SLAM (Cartographer) for a quadrotor in a GPS-denied Gazebo maze | ROS 2 Jazzy, Python, web dashboard",
-    html_url: "https://github.com/nezamimdkaif/drone-slam-simulator",
-    language: "Python",
+    name: "portfolio",
+    description: "This website: Next.js, TypeScript, Three.js",
+    html_url: "https://github.com/nezamimdkaif/portfolio",
+    language: "TypeScript",
     pushed_at: "2026-11-21T00:00:00Z",
     fork: false,
   },
@@ -35,7 +35,7 @@ export default function GitHubLive() {
     })
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((data: Repo[]) => {
-        const list = data.filter((r) => !r.fork && r.name !== profile.githubUser && r.name !== "portfolio").slice(0, 4);
+        const list = data.filter((r) => !r.fork && r.name !== profile.githubUser).slice(0, 4);
         setRepos(list.length ? list : FALLBACK);
       })
       .catch(() => setRepos(FALLBACK));

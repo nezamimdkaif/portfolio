@@ -16,7 +16,7 @@ export const profile = {
 
 export const news: { date: string; text: string; href?: string }[] = [
   { date: "Nov 2026", text: "Built the first real 2D LiDAR map on the drone: Cartographer on a Raspberry Pi 4 with Pixhawk 6C IMU over MAVROS." },
-  { date: "Nov 2026", text: "Open-sourced the Drone SLAM Simulator with a 24-page manual.", href: "https://github.com/nezamimdkaif/drone-slam-simulator" },
+  { date: "Nov 2026", text: "Built a Drone SLAM Simulator to practise mapping before the real drone, with a 24-page manual.", href: "/docs/drone-slam-simulator-manual.pdf" },
   { date: "Nov 2026", text: "Found that loop closure made SLAM worse in a repetitive maze: 0.10 m vs 0.42 m mean error over 3 runs each." },
   { date: "Sep 2026", text: "Internship extended by six months to work on the NIDAR 2.0 AirMouse indoor mapping mission." },
   { date: "Jul 2026", text: "Submitted a 56-page internship report on UAV flight-log analysis and vision-based landing.", href: "/docs/internship-report-uav-flight-logs-vision-landing.pdf" },
@@ -111,7 +111,7 @@ export const projects: Project[] = [
   {
     id: "sim",
     title: "Drone SLAM Simulator",
-    kicker: "Simulation · Open source",
+    kicker: "Simulation · Practice project",
     summary:
       "Gazebo maze, quad-X drone with 2D LiDAR, IMU and camera, live Cartographer SLAM, a web dashboard and phone joystick control. A practice setup for learning SLAM before moving to the real drone.",
     points: [
@@ -126,7 +126,6 @@ export const projects: Project[] = [
       { kind: "image", src: "/img/sim-dashboard_grid.jpg", alt: "Web dashboard with live map", caption: "Web dashboard with 1 m grid" },
     ],
     links: [
-      { label: "GitHub", href: "https://github.com/nezamimdkaif/drone-slam-simulator" },
       { label: "Manual (PDF)", href: "/docs/drone-slam-simulator-manual.pdf" },
     ],
   },
@@ -204,7 +203,6 @@ export const docs: Doc[] = [
       "Troubleshooting table from real failures",
     ],
     href: "/docs/drone-slam-simulator-manual.pdf",
-    source: { label: "Source on GitHub", href: "https://github.com/nezamimdkaif/drone-slam-simulator" },
   },
   {
     title: "Project Internship Presentation",
@@ -218,19 +216,6 @@ export const docs: Doc[] = [
       "Autonomy pipeline and next steps",
     ],
     href: "/docs/internship-presentation.pdf",
-  },
-  {
-    title: "Hardware, Safety and Flying Guide",
-    type: "Engineering guide",
-    meta: "Markdown · real drone",
-    date: "Nov 2026",
-    inside: [
-      "Why the companion computer cannot affect the flight",
-      "Wiring, power and flight-controller parameters",
-      "Keeping GPS and compass clean, mounting",
-      "Bench test before flying and limits of 2D SLAM",
-    ],
-    href: "https://github.com/nezamimdkaif/drone-slam-simulator/blob/main/docs/HARDWARE_AND_FLYING_GUIDE.md",
   },
   {
     title: "Overview of Global Navigation Satellite System",
