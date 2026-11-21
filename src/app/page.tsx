@@ -25,7 +25,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-page flex-col gap-2 px-4 py-8 font-mono text-[10px] leading-relaxed text-paper-mute md:flex-row md:justify-between md:px-6">
           <span>© 2026 {profile.name}</span>
           <span>
-            Imagery: Earth textures Solar System Scope (CC BY 4.0) · Milky Way ESO/S. Brunier (CC BY 4.0) · Galaxies NASA, ESA, Hubble Heritage (M101 CC BY 4.0)
+            Perseverance 3D model NASA/JPL-Caltech · Milky Way ESO/S. Brunier (CC BY 4.0) · Galaxies NASA, ESA, Hubble Heritage (M101 CC BY 4.0)
           </span>
         </div>
       </footer>

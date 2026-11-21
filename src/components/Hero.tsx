@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { news, profile } from "@/lib/data";
 import { getAssetPath } from "@/utils";
 
-const EarthHero = dynamic(() => import("./EarthHero"), { ssr: false });
+const RoverHero = dynamic(() => import("./RoverHero"), { ssr: false });
 
 const links = [
   { label: "Resume", href: profile.resume },
@@ -16,7 +16,7 @@ const links = [
 ];
 
 export default function Hero() {
-  // render a single WebGL Earth: full-bleed on desktop, a box under the text on phones
+  // render a single WebGL rover: full-bleed on desktop, a box under the text on phones
   const [wide, setWide] = useState<boolean | null>(null);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -28,10 +28,10 @@ export default function Hero() {
 
   return (
     <section id="top" className="relative">
-      {/* Earth: full-bleed behind the text on large screens, below it on phones */}
+      {/* Rover: full-bleed behind the text on large screens, below it on phones */}
       <div className="relative">
        <div className="relative lg:h-[100svh] lg:min-h-[640px]">
-        {wide === true && <EarthHero className="absolute inset-0" />}
+        {wide === true && <RoverHero className="absolute inset-0" />}
 
         <div className="pointer-events-none relative mx-auto flex h-full max-w-page items-center px-4 pt-28 md:px-6 lg:pt-0">
           <motion.div
@@ -65,7 +65,7 @@ export default function Hero() {
        </div>
       </div>
 
-      <div className="relative mt-6 h-[52vh] lg:hidden">{wide === false && <EarthHero className="absolute inset-0" />}</div>
+      <div className="relative mt-6 h-[52vh] lg:hidden">{wide === false && <RoverHero className="absolute inset-0" />}</div>
 
       <div className="mx-auto mt-10 max-w-page px-4 md:px-6 lg:mt-0">
         <h2 className="label mb-4">News</h2>
