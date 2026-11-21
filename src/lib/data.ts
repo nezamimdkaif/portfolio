@@ -12,14 +12,16 @@ export const profile = {
   githubUser: "nezamimdkaif",
   linkedin: "https://www.linkedin.com/in/md-kaif-nezami-029507313",
   resume: "/docs/Md_Kaif_Nezami_Resume.pdf",
-  portrait: "/img/portrait.jpg",
 };
 
-export const stats = [
-  { value: "0.10 m", label: "mean SLAM error, loop closure off (vs 0.42 m on)" },
-  { value: "19+", label: "ArduPilot / PX4 flight logs analysed" },
-  { value: "50 Hz", label: "flight-controller IMU streamed over MAVLink" },
-  { value: "56 pp", label: "internship report, IIT (ISM) Dhanbad" },
+export const news: { date: string; text: string; href?: string }[] = [
+  { date: "Nov 2026", text: "Built the first real 2D LiDAR map on the drone: Cartographer on a Raspberry Pi 4 with Pixhawk 6C IMU over MAVROS." },
+  { date: "Nov 2026", text: "Open-sourced the Drone SLAM Simulator with a 24-page manual.", href: "https://github.com/nezamimdkaif/drone-slam-simulator" },
+  { date: "Nov 2026", text: "Found that loop closure made SLAM worse in a repetitive maze: 0.10 m vs 0.42 m mean error over 3 runs each." },
+  { date: "Sep 2026", text: "Internship extended by six months to work on the NIDAR 2.0 AirMouse indoor mapping mission." },
+  { date: "Jul 2026", text: "Submitted a 56-page internship report on UAV flight-log analysis and vision-based landing.", href: "/docs/internship-report-uav-flight-logs-vision-landing.pdf" },
+  { date: "May 2026", text: "Joined the Drone Electronics Laboratory, IIT (ISM) Dhanbad, as a summer project intern." },
+  { date: "2026", text: "ISRO IRoC-U 2026 with Team AADISHAKTI: reached the elimination round; secured INR 1,00,000 sponsorship from SAIL." },
 ];
 
 export type Experience = {
@@ -100,8 +102,8 @@ export const projects: Project[] = [
     ],
     tags: ["ROS 2 Humble", "Cartographer", "MAVROS", "RPLIDAR", "Raspberry Pi 4"],
     media: [
-      { kind: "image", src: "/img/real-map-final.jpg", alt: "Final 2D occupancy map of a room and corridor", caption: "Final map: room and corridor" },
       { kind: "video", src: "/video/real-map-building.mp4", alt: "RViz view of the map being built on the real drone", caption: "Map building live in RViz (8x speed)" },
+      { kind: "image", src: "/img/real-map-final.jpg", alt: "Final 2D occupancy map of a room and corridor", caption: "Final map: room and corridor" },
       { kind: "image", src: "/img/real-map-top.jpg", alt: "Final map seen from above", caption: "Final map from above" },
     ],
     links: [],
@@ -158,8 +160,8 @@ export const projects: Project[] = [
     ],
     tags: ["OpenCV", "ArUco", "ROS 2", "MAVROS", "Gazebo"],
     media: [
-      { kind: "video", src: "/video/aruco-landing-gazebo.mp4", alt: "Drone landing on an ArUco marker in Gazebo", caption: "ArUco landing in Gazebo" },
       { kind: "image", src: "/img/landing-drone-pad-1.jpg", alt: "Quadrotor on the ArUco landing pad", caption: "Test drone on the ArUco pad" },
+      { kind: "video", src: "/video/aruco-landing-gazebo.mp4", alt: "Drone landing on an ArUco marker in Gazebo", caption: "ArUco landing in Gazebo" },
       { kind: "image", src: "/img/landing-node-sketch.jpg", alt: "Hand-drawn ROS node architecture", caption: "Node architecture, first sketch" },
     ],
     links: [{ label: "Slides (PDF)", href: "/docs/internship-presentation.pdf" }],
@@ -262,10 +264,9 @@ export const loopClosure = {
 
 export const sections = [
   { id: "top", label: "Home" },
-  { id: "work", label: "Experience" },
   { id: "projects", label: "Projects" },
   { id: "finding", label: "Finding" },
+  { id: "work", label: "Experience" },
   { id: "docs", label: "Documentation" },
-  { id: "skills", label: "Skills" },
   { id: "contact", label: "Contact" },
 ];

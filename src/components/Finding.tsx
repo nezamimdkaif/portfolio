@@ -45,7 +45,7 @@ export default function Finding() {
         <div className="mx-auto grid w-full max-w-page items-center gap-10 px-4 md:px-6 gap-y-5 lg:grid-cols-2">
           <div>
             <div className="label mb-3 flex items-center gap-3">
-              <span className="text-signal">03</span>
+              <span className="text-signal">02</span>
               <span className="h-px w-10 bg-ink-600" />
               <span>Research finding</span>
             </div>

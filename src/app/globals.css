@@ -12,21 +12,21 @@ html {
 }
 
 body {
-  background: #0b0c0e;
-  color: #ece8e1;
+  background: #0a0f1a;
+  color: #e6e6e6;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: #ff6b35;
-  color: #0b0c0e;
+  background: #e8c872;
+  color: #0a0f1a;
 }
 
 /* thin engineering-drawing grid used behind some panels */
 .blueprint {
   background-image:
-    linear-gradient(to right, rgba(236, 232, 225, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(236, 232, 225, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(230, 230, 230, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 230, 230, 0.04) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -41,7 +41,7 @@ body {
     @apply inline-flex items-center gap-2 rounded-md border border-ink-600 px-4 py-2 text-sm font-medium text-paper transition-colors hover:border-paper-dim hover:bg-ink-800;
   }
   .btn-primary {
-    @apply border-signal bg-signal text-ink-950 hover:border-[#ff8352] hover:bg-[#ff8352];
+    @apply border-signal bg-signal text-ink-950 hover:border-[#f0d796] hover:bg-[#f0d796];
   }
   .panel {
     @apply rounded-xl border border-ink-700 bg-ink-900/80;
@@ -52,7 +52,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #ff6b35;
+  outline: 2px solid #e8c872;
   outline-offset: 2px;
 }
 

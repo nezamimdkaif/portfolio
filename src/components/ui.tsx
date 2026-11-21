@@ -19,13 +19,13 @@ export function Reveal({ children, delay = 0, className = "" }: { children: Reac
 
 export function SectionHead({ index, title, lead }: { index: string; title: string; lead?: string }) {
   return (
-    <Reveal className="mb-10 md:mb-14">
+    <Reveal className="mb-6 md:mb-8">
       <div className="label mb-3 flex items-center gap-3">
         <span className="text-signal">{index}</span>
         <span className="h-px w-10 bg-ink-600" />
         <span>{title}</span>
       </div>
-      {lead && <p className="max-w-2xl text-2xl font-light leading-snug text-paper md:text-3xl">{lead}</p>}
+      {lead && <p className="max-w-2xl text-lg font-light leading-snug text-paper-dim">{lead}</p>}
     </Reveal>
   );
 }

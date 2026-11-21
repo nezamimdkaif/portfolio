@@ -52,7 +52,7 @@ export default function Starfield() {
         const y = (((s.y - sy * s.z * 0.35) % (h * 3)) + h * 3) % (h * 3);
         if (y > h) continue;
         const a = 0.35 + s.z * 0.5 + (reduce ? 0 : Math.sin(t / 1600 + s.tw) * 0.12);
-        ctx.fillStyle = s.z > 0.5 ? `rgba(255,214,190,${a})` : `rgba(236,232,225,${a})`;
+        ctx.fillStyle = s.z > 0.5 ? `rgba(240,220,170,${a})` : `rgba(225,230,240,${a})`;
         ctx.beginPath();
         ctx.arc(s.x, y, s.r, 0, Math.PI * 2);
         ctx.fill();

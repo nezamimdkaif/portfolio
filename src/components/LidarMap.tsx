@@ -83,9 +83,9 @@ export default function LidarMap({ className = "" }: { className?: string }) {
       grid[i] = v;
       const p = i * 4;
       if (v === 1) {
-        img.data[p] = 217; img.data[p + 1] = 214; img.data[p + 2] = 207; img.data[p + 3] = 34;
+        img.data[p] = 159; img.data[p + 1] = 211; img.data[p + 2] = 199; img.data[p + 3] = 26;
       } else {
-        img.data[p] = 127; img.data[p + 1] = 209; img.data[p + 2] = 185; img.data[p + 3] = 255;
+        img.data[p] = 230; img.data[p + 1] = 230; img.data[p + 2] = 230; img.data[p + 3] = 255;
       }
     };
 
@@ -160,7 +160,7 @@ export default function LidarMap({ className = "" }: { className?: string }) {
 
       // current rays
       ctx.lineWidth = Math.max(1, sc * 0.008);
-      ctx.strokeStyle = "rgba(255,107,53,0.16)";
+      ctx.strokeStyle = "rgba(230,230,230,0.12)";
       ctx.beginPath();
       for (let k = 0; k < RAYS; k += 2) {
         const a = (k / RAYS) * Math.PI * 2;
@@ -171,7 +171,7 @@ export default function LidarMap({ className = "" }: { className?: string }) {
       ctx.stroke();
 
       // trail
-      ctx.strokeStyle = "rgba(255,107,53,0.75)";
+      ctx.strokeStyle = "rgba(232,200,114,0.85)";
       ctx.lineWidth = Math.max(1, sc * 0.02);
       ctx.beginPath();
       trail.forEach(([tx, ty], i) => {
@@ -189,20 +189,20 @@ export default function LidarMap({ className = "" }: { className?: string }) {
       ctx.save();
       ctx.translate(px, py);
       ctx.rotate(heading);
-      ctx.strokeStyle = "#ece8e1";
+      ctx.strokeStyle = "#e6e6e6";
       ctx.lineWidth = Math.max(1, sc * 0.025);
       ctx.beginPath();
       ctx.moveTo(-r, -r); ctx.lineTo(r, r);
       ctx.moveTo(-r, r); ctx.lineTo(r, -r);
       ctx.stroke();
-      ctx.fillStyle = "#0b0c0e";
+      ctx.fillStyle = "#0a0f1a";
       for (const [mx, my] of [[-r, -r], [r, r], [-r, r], [r, -r]]) {
         ctx.beginPath();
         ctx.arc(mx, my, r * 0.45, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
       }
-      ctx.fillStyle = "#ff6b35";
+      ctx.fillStyle = "#e8c872";
       ctx.beginPath();
       ctx.arc(r * 0.55, 0, r * 0.22, 0, Math.PI * 2);
       ctx.fill();

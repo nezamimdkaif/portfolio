@@ -42,7 +42,7 @@ export default function GitHubLive() {
   }, []);
 
   return (
-    <div className="panel p-6">
+    <div className="rounded-lg border border-ink-700 p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-paper">
           <Github size={16} />

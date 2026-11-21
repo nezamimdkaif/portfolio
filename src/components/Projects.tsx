@@ -1,7 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { projects, type Media, type Project } from "@/lib/data";
 import { getAssetPath } from "@/utils";
@@ -12,101 +10,84 @@ function MediaView({ m }: { m: Media }) {
   useEffect(() => {
     const v = vref.current;
     if (!v) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.4 });
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.3 });
     io.observe(v);
     return () => io.disconnect();
   }, []);
   if (m.kind === "video") {
-    return (
-      <video ref={vref} src={getAssetPath(m.src)} muted loop playsInline preload="metadata" aria-label={m.alt} className="h-full w-full object-cover" />
-    );
+    return <video ref={vref} src={getAssetPath(m.src)} muted loop playsInline preload="metadata" aria-label={m.alt} className="h-full w-full object-cover" />;
   }
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={getAssetPath(m.src)} alt={m.alt} loading="lazy" className="h-full w-full object-cover" />;
 }
 
-function Gallery({ media }: { media: Media[] }) {
+function Thumb({ media }: { media: Media[] }) {
   const [i, setI] = useState(0);
   const m = media[i];
   return (
     <div>
-      <div className="panel relative aspect-[16/10] overflow-hidden bg-ink-900">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={m.src}
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="absolute inset-0"
-          >
-            <MediaView m={m} />
-          </motion.div>
-        </AnimatePresence>
+      <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-ink-700 bg-ink-900">
+        <MediaView key={m.src} m={m} />
       </div>
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <p className="font-mono text-[11px] text-paper-mute">{m.caption}</p>
-        {media.length > 1 && (
-          <div className="flex gap-1.5">
-            {media.map((x, k) => (
-              <button
-                key={x.src}
-                onClick={() => setI(k)}
-                aria-label={`Show ${x.caption ?? x.alt}`}
-                className={`h-1.5 rounded-full transition-all ${k === i ? "w-6 bg-signal" : "w-1.5 bg-ink-600 hover:bg-paper-mute"}`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      {media.length > 1 && (
+        <div className="mt-2 flex gap-1.5">
+          {media.map((x, k) => (
+            <button
+              key={x.src}
+              onClick={() => setI(k)}
+              aria-label={`Show ${x.caption ?? x.alt}`}
+              className={`h-1 rounded-full transition-all ${k === i ? "w-5 bg-signal" : "w-2 bg-ink-600 hover:bg-paper-mute"}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
-function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
+function Row({ p }: { p: Project }) {
   return (
-    <article className="grid items-start gap-8 lg:grid-cols-2 lg:gap-14">
-      <Reveal className={flip ? "lg:order-2" : ""}>
-        <Gallery media={p.media} />
-      </Reveal>
-      <Reveal delay={0.1}>
-        <p className="label">{p.kicker}</p>
-        <h3 className="mt-2 text-2xl font-medium text-paper md:text-3xl">{p.title}</h3>
-        <p className="mt-4 leading-relaxed text-paper-dim">{p.summary}</p>
-        <ul className="mt-5 space-y-2">
-          {p.points.map((pt) => (
-            <li key={pt} className="flex gap-3 text-sm leading-relaxed text-paper-dim">
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-signal" />
-              <span>{pt}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="mt-5 flex flex-wrap gap-2">
-          {p.tags.map((t) => (
-            <span key={t} className="chip">{t}</span>
-          ))}
-        </div>
-        {p.links.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-3">
-            {p.links.map((l) => (
-              <a key={l.href} href={getAssetPath(l.href)} target="_blank" rel="noreferrer" className="btn">
-                {l.label} <ArrowUpRight size={15} />
-              </a>
+    <Reveal>
+      <article className="grid gap-6 py-10 md:grid-cols-[22rem_1fr] md:gap-10">
+        <Thumb media={p.media} />
+        <div>
+          <h3 className="text-xl font-medium text-paper">{p.title}</h3>
+          <p className="mt-1 font-mono text-xs text-paper-mute">{p.kicker}</p>
+          {p.links.length > 0 && (
+            <p className="mt-2 flex flex-wrap gap-x-3 text-sm">
+              {p.links.map((l, i) => (
+                <span key={l.href}>
+                  <a href={getAssetPath(l.href)} target="_blank" rel="noreferrer" className="text-signal hover:underline">
+                    [{l.label}]
+                  </a>
+                  {i < p.links.length - 1 && " "}
+                </span>
+              ))}
+            </p>
+          )}
+          <p className="mt-3 leading-relaxed text-paper-dim">{p.summary}</p>
+          <ul className="mt-3 space-y-1.5 text-sm text-paper-dim">
+            {p.points.map((pt) => (
+              <li key={pt} className="flex gap-2.5">
+                <span className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-paper-mute" />
+                <span>{pt}</span>
+              </li>
             ))}
-          </div>
-        )}
-      </Reveal>
-    </article>
+          </ul>
+          <p className="mt-3 font-mono text-[11px] text-paper-mute">{p.tags.join(" · ")}</p>
+        </div>
+      </article>
+    </Reveal>
   );
 }
 
 export default function Projects() {
   return (
-    <section id="projects" className="mx-auto max-w-page px-4 py-24 md:px-6 md:py-32">
-      <SectionHead index="02" title="Projects" lead="From a simulated maze to a real map, with the numbers to back each step." />
-      <div className="space-y-24 md:space-y-32">
-        {projects.map((p, i) => (
-          <ProjectRow key={p.id} p={p} flip={i % 2 === 1} />
+    <section id="projects" className="mx-auto max-w-page px-4 py-20 md:px-6">
+      <SectionHead index="01" title="Projects" />
+      <div className="divide-y divide-ink-700/70">
+        {projects.map((p) => (
+          <Row key={p.id} p={p} />
         ))}
       </div>
     </section>
