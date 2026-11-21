@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { projects, type Media, type Project } from "@/lib/data";
 import { getAssetPath } from "@/utils";
 import { Reveal, SectionHead } from "./ui";
+import { Tilt } from "./effects";
 
 function MediaView({ m }: { m: Media }) {
   const vref = useRef<HTMLVideoElement>(null);
@@ -50,9 +51,11 @@ function Thumb({ media }: { media: Media[] }) {
   const m = media[i];
   return (
     <div>
-      <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-ink-700 bg-ink-900">
-        <MediaView key={m.src} m={m} />
-      </div>
+      <Tilt>
+        <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-ink-700 bg-ink-900">
+          <MediaView key={m.src} m={m} />
+        </div>
+      </Tilt>
       {media.length > 1 && (
         <div className="mt-2 flex gap-1.5">
           {media.map((x, k) => (

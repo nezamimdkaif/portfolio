@@ -198,6 +198,49 @@ export default function SpaceBackground() {
       scene.add(sp);
     }
 
+    // ---------- shooting stars ----------
+    type Meteor = { line: THREE.Line; vel: THREE.Vector3; life: number; max: number };
+    const meteors: Meteor[] = [];
+    let nextMeteor = 2.5;
+    const spawnMeteor = () => {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+      // bright head, dark (invisible with additive blending) tail
+      geo.setAttribute("color", new THREE.BufferAttribute(new Float32Array([0.85, 0.92, 1, 0, 0, 0]), 3));
+      const line = new THREE.Line(geo, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+      line.frustumCulled = false;
+      const side = Math.random() < 0.5 ? -1 : 1;
+      line.position.set(camera.position.x + side * (12 + Math.random() * 22), camera.position.y + 8 + Math.random() * 12, camera.position.z - 45 - Math.random() * 25);
+      const vel = new THREE.Vector3(-side * (28 + Math.random() * 18), -(14 + Math.random() * 10), 0);
+      scene.add(line);
+      meteors.push({ line, vel, life: 0, max: 0.9 + Math.random() * 0.6 });
+    };
+    const updateMeteors = (dt: number) => {
+      nextMeteor -= dt;
+      if (nextMeteor <= 0) {
+        spawnMeteor();
+        nextMeteor = 3.5 + Math.random() * 5;
+      }
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.life += dt;
+        const t = m.life / m.max;
+        const pos = m.line.geometry.attributes.position as THREE.BufferAttribute;
+        const hx = m.vel.x * m.life, hy = m.vel.y * m.life;
+        const tail = Math.min(1, m.life * 3) * 0.28; // tail grows, then keeps length
+        pos.setXYZ(0, hx, hy, 0);
+        pos.setXYZ(1, hx - m.vel.x * tail, hy - m.vel.y * tail, 0);
+        pos.needsUpdate = true;
+        (m.line.material as THREE.LineBasicMaterial).opacity = Math.sin(Math.min(1, t) * Math.PI);
+        if (t >= 1) {
+          scene.remove(m.line);
+          m.line.geometry.dispose();
+          (m.line.material as THREE.Material).dispose();
+          meteors.splice(i, 1);
+        }
+      }
+    };
+
     // ---------- sizing ----------
     const resize = () => {
       const w = window.innerWidth;
@@ -259,6 +302,7 @@ export default function SpaceBackground() {
       sMat.uniforms.uCamZ.value = camZ;
       sMat.uniforms.uTime.value = reduce ? 0 : now / 1000;
       sMat.uniforms.uSpeed.value = speed;
+      if (!reduce) updateMeteors(dt);
       if (!reduce) for (let i = 0; i < galaxies.length; i++) galaxies[i].rotation.z += dt * (0.006 + i * 0.002);
 
       renderer.render(scene, camera);

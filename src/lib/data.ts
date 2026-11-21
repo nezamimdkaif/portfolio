@@ -5,7 +5,7 @@ export const profile = {
   role: "Robotics and UAV Autonomy",
   tagline: "I build autonomy software for robots that fly without GPS.",
   intro:
-    "B.Tech Electronics and Communication Engineering student at BIT Sindri (2024 - 2028). Project intern at the Drone Electronics Laboratory, IIT (ISM) Dhanbad, working on LiDAR SLAM for an indoor search-and-rescue drone. I work mostly in Python and ROS 2, and I like taking a feature from simulation to real hardware and proving it with data.",
+    "Electronics and Communication Engineering undergraduate at BIT Sindri (B.Tech, 2024–2028) and Project Intern at the Drone Electronics Laboratory, IIT (ISM) Dhanbad. I develop autonomy software for drones that must navigate without GPS, with a focus on LiDAR SLAM, sensor integration and simulation-to-hardware testing in Python and ROS 2.",
   location: "Dhanbad, Jharkhand, India",
   email: "mdkaif.ece24@bitsindri.ac.in",
   github: "https://github.com/nezamimdkaif",

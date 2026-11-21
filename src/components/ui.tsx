@@ -22,7 +22,7 @@ export function SectionHead({ index, title, lead }: { index: string; title: stri
     <Reveal className="mb-6 md:mb-8">
       <div className="label mb-3 flex items-center gap-3">
         <span className="text-signal">{index}</span>
-        <span className="h-px w-10 bg-ink-600" />
+        <motion.span className="h-px bg-signal/70" initial={{ width: 0 }} whileInView={{ width: 40 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} />
         <span>{title}</span>
       </div>
       {lead && <p className="max-w-2xl text-lg font-light leading-snug text-paper-dim">{lead}</p>}

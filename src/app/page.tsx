@@ -7,11 +7,13 @@ import Experience from "@/components/Experience";
 import Docs from "@/components/Docs";
 import Contact from "@/components/Contact";
 import { profile } from "@/lib/data";
+import { CursorGlow } from "@/components/effects";
 
 export default function Home() {
   return (
     <>
       <SpaceBackground />
+      <CursorGlow />
       <Nav />
       <main>
         <Hero />

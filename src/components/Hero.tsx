@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { news, profile } from "@/lib/data";
 import { getAssetPath } from "@/utils";
+import { Magnetic, RevealText } from "./effects";
 
 const RoverHero = dynamic(() => import("./RoverHero"), { ssr: false });
 
@@ -41,23 +42,30 @@ export default function Hero() {
             className="pointer-events-auto max-w-xl"
           >
             <p className="label mb-4 text-signal">{profile.role}</p>
-            <h1 className="text-5xl font-semibold tracking-tight text-paper sm:text-6xl">{profile.name}</h1>
+            <h1 className="text-5xl font-semibold tracking-tight text-paper sm:text-6xl">
+              <RevealText text={profile.name} />
+            </h1>
             <p className="mt-6 leading-relaxed text-paper-dim">
-              B.Tech Electronics and Communication Engineering student at <span className="text-paper">BIT Sindri</span> (2024 - 2028) and project
-              intern at the <span className="text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>. I build autonomy software for robots
-              that fly without GPS: LiDAR SLAM, sensor integration and simulation, mostly in Python and ROS 2.
+              Electronics and Communication Engineering undergraduate at <span className="text-paper">BIT Sindri</span> (B.Tech, 2024–2028) and
+              Project Intern at the <span className="text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>.
+            </p>
+            <p className="mt-3 text-lg leading-relaxed text-paper-dim">
+              I develop autonomy software for drones that must navigate without GPS, with a focus on{" "}
+              <span className="text-paper">LiDAR SLAM</span>, <span className="text-paper">sensor integration</span> and{" "}
+              <span className="text-paper">simulation-to-hardware testing</span> in Python and ROS 2.
             </p>
             <p className="mt-6 flex flex-wrap gap-3">
               {links.map((l, i) => (
-                <a
-                  key={l.label}
-                  href={getAssetPath(l.href)}
-                  target={l.href.startsWith("mailto") ? undefined : "_blank"}
-                  rel="noreferrer"
-                  className={i === 0 ? "btn btn-primary" : "btn"}
-                >
-                  {l.label}
-                </a>
+                <Magnetic key={l.label}>
+                  <a
+                    href={getAssetPath(l.href)}
+                    target={l.href.startsWith("mailto") ? undefined : "_blank"}
+                    rel="noreferrer"
+                    className={i === 0 ? "btn btn-primary" : "btn"}
+                  >
+                    {l.label}
+                  </a>
+                </Magnetic>
               ))}
             </p>
           </motion.div>
@@ -77,10 +85,10 @@ export default function Hero() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-[15px]"
+              className="group relative grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-[15px] transition-colors hover:bg-white/[0.03]"
             >
               <span className="font-mono text-[13px] leading-6 text-paper-mute">{n.date}</span>
-              <span className="leading-6 text-paper-dim">
+              <span className="leading-6 text-paper-dim transition-colors group-hover:text-paper">
                 {n.href ? (
                   <a href={getAssetPath(n.href)} target="_blank" rel="noreferrer" className="hover:text-signal">
                     {n.text}
