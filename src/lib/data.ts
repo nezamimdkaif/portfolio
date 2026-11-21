@@ -113,7 +113,7 @@ export const projects: Project[] = [
     title: "Drone SLAM Simulator",
     kicker: "Simulation · Open source",
     summary:
-      "Gazebo maze, quad-X drone with 2D LiDAR, IMU and camera, live Cartographer SLAM, a web dashboard and phone joystick control. Uses the same SLAM config as the real drone.",
+      "Gazebo maze, quad-X drone with 2D LiDAR, IMU and camera, live Cartographer SLAM, a web dashboard and phone joystick control. A practice setup for learning SLAM before moving to the real drone.",
     points: [
       "Seeded maze generator, so every experiment is repeatable.",
       "Python test pilot flies a fixed route and measures SLAM error against Gazebo ground truth.",
