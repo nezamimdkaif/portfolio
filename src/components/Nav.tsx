@@ -22,7 +22,7 @@ export default function Nav() {
   }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-ink-700/60 bg-ink-950/80 backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-ink-700/60 bg-white/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-page items-center justify-between px-4 md:px-6">
         <a href="#top" className="text-sm font-medium tracking-wide text-paper">
           {profile.name}
@@ -33,7 +33,7 @@ export default function Nav() {
               {s.label}
             </a>
           ))}
-          <a href={getAssetPath(profile.resume)} target="_blank" rel="noreferrer" className="text-sm text-paper-dim hover:text-paper">
+          <a href={getAssetPath(profile.resume)} target="_blank" rel="noreferrer" className="btn btn-primary px-3.5 py-1.5">
             Resume
           </a>
         </nav>

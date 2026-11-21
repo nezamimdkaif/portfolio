@@ -14,6 +14,15 @@ export const profile = {
   resume: "/docs/Md_Kaif_Nezami_Resume.pdf",
 };
 
+export const availability = "Open to robotics internships · Summer 2027";
+
+export const stats = [
+  { value: "0.10 m", label: "SLAM error in my loop-closure study" },
+  { value: "19+", label: "UAV flight logs analysed" },
+  { value: "50 Hz", label: "IMU streamed over MAVLink" },
+  { value: "56 pp", label: "internship report written" },
+];
+
 export const news: { date: string; text: string; href?: string }[] = [
   { date: "Nov 2026", text: "Built the first real 2D LiDAR map on the drone: Cartographer on a Raspberry Pi 4 with Pixhawk 6C IMU over MAVROS." },
   { date: "Nov 2026", text: "Built a Drone SLAM Simulator to practise mapping before the real drone, with a 24-page manual.", href: "/docs/drone-slam-simulator-manual.pdf" },
@@ -252,6 +261,7 @@ export const sections = [
   { id: "projects", label: "Projects" },
   { id: "finding", label: "Finding" },
   { id: "work", label: "Experience" },
+  { id: "skills", label: "Skills" },
   { id: "docs", label: "Documentation" },
   { id: "contact", label: "Contact" },
 ];

@@ -2,24 +2,19 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+import { ArrowRight, FileText, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
-import { news, profile } from "@/lib/data";
+import { availability, news, profile, stats } from "@/lib/data";
 import { getAssetPath } from "@/utils";
 import { Magnetic, RevealText } from "./effects";
 
 const RoverHero = dynamic(() => import("./RoverHero"), { ssr: false });
-const DroneHero = dynamic(() => import("./DroneHero"), { ssr: false });
 
-const links = [
-  { label: "Resume", href: profile.resume },
-  { label: "GitHub", href: profile.github },
-  { label: "LinkedIn", href: profile.linkedin },
-  { label: "Email", href: `mailto:${profile.email}` },
-];
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Hero() {
-  // desktop: Perseverance rover full-bleed behind the text; phones: their own layout with the drone
-  const [wide, setWide] = useState<boolean | null>(null);
+  // the 3D rover only loads on desktop; phones get the same layout without it
+  const [wide, setWide] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
     const on = () => setWide(mq.matches);
@@ -29,109 +24,118 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="top" className="relative">
-      {/* soft blue tint: its own layer BEHIND the background drone (z -20 < drone z -10) */}
+    <section id="top" className="relative overflow-hidden">
+      {/* soft blue wash + dot grid */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[#eff6ff] via-white to-white" />
-      {/* ---------- desktop ---------- */}
-      <div className="relative hidden lg:block">
-       <div className="relative lg:h-[100svh] lg:min-h-[640px]">
-        {wide === true && <RoverHero className="absolute inset-0" />}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-20 opacity-60 [mask-image:radial-gradient(ellipse_at_top_left,black_20%,transparent_70%)]"
+        style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "22px 22px" }}
+      />
 
-        <div className="pointer-events-none relative mx-auto flex h-full max-w-page items-center px-4 pt-28 md:px-6 lg:pt-0">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-auto max-w-xl"
-          >
-            <p className="label mb-4 text-signal">{profile.role}</p>
-            <h1 className="text-5xl font-semibold tracking-tight text-paper sm:text-6xl">
+      <div className="relative lg:min-h-[100svh]">
+        {wide && <RoverHero className="absolute inset-y-0 right-0 hidden w-[62%] lg:block" />}
+
+        <div className="pointer-events-none relative mx-auto flex max-w-page flex-col px-5 pb-12 pt-28 md:px-6 lg:min-h-[100svh] lg:justify-center lg:pb-16 lg:pt-20">
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease }} className="pointer-events-auto max-w-xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[13px] font-medium text-emerald-700">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              {availability}
+            </span>
+
+            <h1 className="mt-6 text-[2.75rem] font-semibold leading-[1.05] tracking-tight text-paper sm:text-6xl">
               <RevealText text={profile.name} />
             </h1>
-            <p className="mt-6 leading-relaxed text-paper-dim">
-              Third-year Electronics and Communication Engineering undergraduate at <span className="text-paper">BIT Sindri</span> (B.Tech, 2024–2028) and
-              Project Intern at the <span className="text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>.
+            <p className="mt-3 text-xl font-medium text-signal">{profile.role}</p>
+
+            <p className="mt-5 text-[16px] leading-relaxed text-paper-dim">
+              Third-year Electronics and Communication Engineering undergraduate at <span className="font-medium text-paper">BIT Sindri</span> (B.Tech,
+              2024–2028) and Project Intern at the <span className="font-medium text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>.
             </p>
-            <p className="mt-3 text-lg leading-relaxed text-paper-dim">
+            <p className="mt-3 text-[17px] leading-relaxed text-paper-dim">
               I develop autonomy software for drones that must navigate without GPS, with a focus on{" "}
-              <span className="text-paper">LiDAR SLAM</span>, <span className="text-paper">sensor integration</span> and{" "}
-              <span className="text-paper">simulation-to-hardware testing</span> in Python and ROS 2.
+              <span className="font-medium text-paper">LiDAR SLAM</span>, <span className="font-medium text-paper">sensor integration</span> and{" "}
+              <span className="font-medium text-paper">simulation-to-hardware testing</span> in Python and ROS 2.
             </p>
-            <p className="mt-6 flex flex-wrap gap-3">
-              {links.map((l, i) => (
-                <Magnetic key={l.label}>
-                  <a
-                    href={getAssetPath(l.href)}
-                    target={l.href.startsWith("mailto") ? undefined : "_blank"}
-                    rel="noreferrer"
-                    className={i === 0 ? "btn btn-primary" : "btn"}
-                  >
-                    {l.label}
-                  </a>
-                </Magnetic>
-              ))}
-            </p>
-            <p className="mt-8 max-w-md text-[13px] leading-relaxed text-paper-mute">
-              3D: NASA&apos;s Perseverance rover (model: NASA/JPL-Caltech), which navigates Mars without GPS, the kind of autonomy I work on.
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <Magnetic>
+                <a href={getAssetPath(profile.resume)} target="_blank" rel="noreferrer" className="btn btn-primary px-5 py-2.5">
+                  <FileText size={16} /> Resume
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#projects" className="btn px-5 py-2.5">
+                  View projects <ArrowRight size={16} />
+                </a>
+              </Magnetic>
+              <span className="flex items-center gap-1">
+                {[
+                  { href: profile.github, icon: Github, label: "GitHub" },
+                  { href: profile.linkedin, icon: Linkedin, label: "LinkedIn" },
+                  { href: `mailto:${profile.email}`, icon: Mail, label: "Email" },
+                ].map(({ href, icon: Icon, label }) => (
+                  <Magnetic key={label} strength={0.35}>
+                    <a
+                      href={href}
+                      target={href.startsWith("mailto") ? undefined : "_blank"}
+                      rel="noreferrer"
+                      aria-label={label}
+                      className="flex h-10 w-10 items-center justify-center rounded-full text-paper-dim transition-colors hover:bg-ink-800 hover:text-signal"
+                    >
+                      <Icon size={19} />
+                    </a>
+                  </Magnetic>
+                ))}
+              </span>
+            </div>
+            <p className="mt-4 flex items-center gap-1.5 text-[13px] text-paper-mute">
+              <MapPin size={14} /> {profile.location}
             </p>
           </motion.div>
-        </div>
-       </div>
-      </div>
 
-      {/* ---------- phones ---------- */}
-      <div className="lg:hidden">
-        {/* the drone flies in the background, behind all content */}
-        {wide === false && <DroneHero background className="pointer-events-none fixed inset-0 -z-10" />}
-        <div aria-hidden className="h-[44svh] min-h-[280px]" />
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="px-5 pt-4"
-        >
-          <p className="label mb-3 text-signal">{profile.role}</p>
-          <h1 className="text-[2.6rem] font-semibold leading-[1.05] tracking-tight text-paper">
-            <RevealText text={profile.name} />
-          </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-paper-dim">
-            Third-year Electronics and Communication Engineering undergraduate at <span className="text-paper">BIT Sindri</span> (B.Tech, 2024–2028)
-            and Project Intern at the <span className="text-paper">Drone Electronics Laboratory, IIT (ISM) Dhanbad</span>.
-          </p>
-          <p className="mt-3 text-[16px] leading-relaxed text-paper-dim">
-            I develop autonomy software for drones that must navigate without GPS, with a focus on <span className="text-paper">LiDAR SLAM</span>,{" "}
-            <span className="text-paper">sensor integration</span> and <span className="text-paper">simulation-to-hardware testing</span> in Python and ROS 2.
-          </p>
-          <div className="mt-6 grid grid-cols-2 gap-2.5">
-            {links.map((l, i) => (
-              <a
-                key={l.label}
-                href={getAssetPath(l.href)}
-                target={l.href.startsWith("mailto") ? undefined : "_blank"}
-                rel="noreferrer"
-                className={`${i === 0 ? "btn btn-primary" : "btn"} justify-center py-3 active:scale-[0.97]`}
+          {/* key numbers */}
+          <div className="pointer-events-auto mt-10 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
+            {stats.map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 + i * 0.08, ease }}
+                className="rounded-xl border border-ink-700 bg-white/80 px-4 py-3 shadow-sm backdrop-blur"
               >
-                {l.label}
-              </a>
+                <div className="text-xl font-semibold tracking-tight text-paper">{s.value}</div>
+                <div className="mt-0.5 text-[12px] leading-snug text-paper-mute">{s.label}</div>
+              </motion.div>
             ))}
           </div>
-        </motion.div>
+
+          {wide && (
+            <p className="pointer-events-auto mt-8 max-w-md text-[12.5px] leading-relaxed text-paper-mute">
+              3D: NASA&apos;s Perseverance rover (model: NASA/JPL-Caltech), which navigates Mars without GPS, the kind of autonomy I work on.
+            </p>
+          )}
+        </div>
       </div>
 
-      <div className="mx-auto mt-12 max-w-page px-5 md:px-6 lg:mt-0">
-        <h2 className="label mb-4">News</h2>
-        <ul className="divide-y divide-ink-700 border-y border-ink-700">
-          {news.map((n, i) => (
+      {/* latest updates */}
+      <div className="mx-auto max-w-page px-5 pb-6 md:px-6">
+        <h2 className="label mb-3">Latest</h2>
+        <ul className="divide-y divide-ink-700 rounded-xl border border-ink-700 bg-white shadow-sm">
+          {news.slice(0, 5).map((n, i) => (
             <motion.li
               key={n.text}
-              initial={{ opacity: 0, x: -8 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.04 }}
-              className="group relative grid grid-cols-[5.5rem_1fr] gap-4 py-2.5 text-[15px] transition-colors hover:bg-ink-900"
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="group grid grid-cols-[5.5rem_1fr] gap-4 px-4 py-3 text-[15px] transition-colors hover:bg-ink-900"
             >
               <span className="font-mono text-[13px] leading-6 text-paper-mute">{n.date}</span>
-              <span className="leading-6 text-paper-dim transition-colors group-hover:text-paper">
+              <span className="leading-6 text-paper-dim group-hover:text-paper">
                 {n.href ? (
                   <a href={getAssetPath(n.href)} target="_blank" rel="noreferrer" className="hover:text-signal">
                     {n.text}
